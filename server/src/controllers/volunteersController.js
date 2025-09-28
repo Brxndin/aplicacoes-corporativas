@@ -1,4 +1,4 @@
-const VolunteerServices = require('../services/volunteerServices');
+import VolunteerServices from '../services/volunteerServices';
 
 class VolunteersController {
     static async getAll(req, res) {
@@ -13,9 +13,25 @@ class VolunteersController {
     
     static async create(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = await VolunteerServices.createVolunteer(req.body);
 
-            res.status(201).json({ message: 'Voluntário criado com sucesso.', id });
+            res.status(201).json({ message: 'Voluntário criado com sucesso!', id });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async addInEvent(req, res) {
+        try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
+            const id = await VolunteerServices.addInEvent(req.body);
+
+            res.status(201).json({ message: 'Voluntário adicionado no evento com sucesso!', id });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -23,6 +39,9 @@ class VolunteersController {
     
     static async update(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = req.params.id;
 
             await VolunteerServices.updateVolunteer(id, req.body);

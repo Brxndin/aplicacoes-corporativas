@@ -1,6 +1,8 @@
-const Volunteer = require("../models/Volunteer");
+import VolunteerEvent from "../models/VolunteerEvent";
+import Volunteer from "../models/Volunteer";
 
-class VolunteerServices {
+class VolunteerServices
+{
     static async getAllVoluteers() {
         return await Volunteer.findAll();
     }
@@ -14,6 +16,16 @@ class VolunteerServices {
         // }
 
         return await Volunteer.create(volunteer);
+    }
+
+    static async addInEvent(volunteerEvent) {
+        const volunteerEventExists = await Volunteer.findByEvent(volunteerEvent);
+
+        if (volunteerEventExists) {
+            throw new Error("Voluntário já cadastrado nesse evento!");
+        }
+
+        return await VolunteerEvent.create(volunteerEvent);
     }
     
     static async updateVolunteer(id, volunteer) {
