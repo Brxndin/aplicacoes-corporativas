@@ -1,6 +1,7 @@
-const User = require("../models/User");
+import User from "../models/User";
 
-class UserServices {
+class UserServices
+{
     static async getAllUsers() {
         return await User.findAll();
     }

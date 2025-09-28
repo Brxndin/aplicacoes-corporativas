@@ -1,6 +1,7 @@
-const Event = require("../models/Event");
+import Event from "../models/Event";
 
-class EventServices {
+class EventServices
+{
     static async getAllEvents() {
         return await Event.findAll();
     }
