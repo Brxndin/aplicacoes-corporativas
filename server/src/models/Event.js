@@ -1,30 +1,32 @@
+const db = require('../config/database');
+
 class Event
 {
     static async findAll() {
-        const [rows] = await db.query('SELECT * FROM events');
+        const [rows] = await db.query('SELECT * FROM eventos');
 
         return rows;
     }
     
-    static async create(event) {
-        const { name, email } = event;
+    static async create(evento) {
+        const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const [result] = await db.query('INSERT INTO events (name, email) VALUES (?, ?)', [name, email]);
+        const [result] = await db.query('INSERT INTO eventos (nome, descricao, data_hora_inicio, data_hora_fim) VALUES (?, ?, ?, ?)', [nome, descricao, data_hora_inicio, data_hora_fim]);
 
         // retorna o id do registro recém criado
         return result.insertId;
     }
     
-    static async update(id, event) {
-        const { name, email } = event;
+    static async update(id, evento) {
+        const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const [result] = await db.query('UPDATE events SET name = ?, email = ? WHERE id = ? ', [name, email, id]);
+        const [result] = await db.query('UPDATE eventos SET nome = ?, descricao = ?, data_hora_inicio = ?, data_hora_fim = ? WHERE id = ? ', [nome, descricao, data_hora_inicio, data_hora_fim, id]);
 
         return result.affectedRows;
     }
     
     static async delete(id) {
-        const [result] = await db.query('DELETE FROM events WHERE id = ?', [id]);
+        const [result] = await db.query('DELETE FROM eventos WHERE id = ?', [id]);
 
         return result.affectedRows;
     }

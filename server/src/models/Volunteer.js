@@ -1,30 +1,32 @@
+const db = require('../config/database');
+
 class Volunteer
 {
     static async findAll() {
-        const [rows] = await db.query('SELECT * FROM volunteers');
+        const [rows] = await db.query('SELECT * FROM voluntarios');
 
         return rows;
     }
     
     static async create(volunteer) {
-        const { name, email } = volunteer;
+        const { cpf, nome, email, telefone } = volunteer;
 
-        const [result] = await db.query('INSERT INTO volunteers (name, email) VALUES (?, ?)', [name, email]);
+        const [result] = await db.query('INSERT INTO voluntarios (cfp, nome, email, telefone) VALUES (?, ?, ?, ?)', [cpf, nome, email, telefone]);
 
         // retorna o id do registro recém criado
         return result.insertId;
     }
     
     static async update(id, volunteer) {
-        const { name, email } = volunteer;
+        const { cpf, nome, email, telefone } = volunteer;
 
-        const [result] = await db.query('UPDATE volunteers SET name = ?, email = ? WHERE id = ? ', [name, email, id]);
+        const [result] = await db.query('UPDATE voluntarios SET cpf = ?, nome = ?, email = ?, telefone = ? WHERE id = ? ', [cpf, nome, email, telefone, id]);
 
         return result.affectedRows;
     }
     
     static async delete(id) {
-        const [result] = await db.query('DELETE FROM volunteers WHERE id = ?', [id]);
+        const [result] = await db.query('DELETE FROM voluntarios WHERE id = ?', [id]);
 
         return result.affectedRows;
     }
