@@ -8,11 +8,11 @@ const pool = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     // faz a conexão aguardar caso todas as conexões estejam ocupadas
-    waitForConnections: true, 
+    waitForConnections: true,
     // limita o número máximo de conexões simultâneas
-    connectionLimit: 10, 
+    connectionLimit: 10,
     // número máximo de requisições enfileiradas (0 = sem limite)
-    queueLimit: 0 
+    queueLimit: 0
 });
 
 module.exports = pool;
