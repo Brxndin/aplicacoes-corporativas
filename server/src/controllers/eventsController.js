@@ -1,4 +1,4 @@
-const EventServices = require('../services/eventServices');
+import EventServices from '../services/eventServices';
 
 class EventsController {
     static async getAll(req, res) {
@@ -13,6 +13,9 @@ class EventsController {
     
     static async create(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = await EventServices.createEvent(req.body);
 
             res.status(201).json({ message: 'Evento criado com sucesso.', id });
@@ -23,6 +26,9 @@ class EventsController {
     
     static async update(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = req.params.id;
 
             await EventServices.updateEvent(id, req.body);

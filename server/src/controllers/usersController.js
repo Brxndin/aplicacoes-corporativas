@@ -1,4 +1,4 @@
-const UserServices = require('../services/userServices');
+import UserServices from '../services/userServices';
 
 class UsersController {
     static async getAll(req, res) {
@@ -13,6 +13,9 @@ class UsersController {
     
     static async create(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = await UserServices.createUser(req.body);
 
             res.status(201).json({ message: 'Usuário criado com sucesso.', id });
@@ -23,6 +26,9 @@ class UsersController {
     
     static async update(req, res) {
         try {
+            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
+            // importante validar se os campos usados existem de fato
+
             const id = req.params.id;
 
             await UserServices.updateUser(id, req.body);
