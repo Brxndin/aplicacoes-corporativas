@@ -1,5 +1,5 @@
-import VolunteerEvent from "../models/VolunteerEvent";
-import Volunteer from "../models/Volunteer";
+import VolunteerEvent from "../models/VolunteerEvent.js";
+import Volunteer from "../models/Volunteer.js";
 
 class VolunteerServices
 {

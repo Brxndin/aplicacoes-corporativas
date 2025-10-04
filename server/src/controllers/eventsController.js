@@ -1,4 +1,4 @@
-import EventServices from '../services/eventServices';
+import EventServices from '../services/eventServices.js';
 
 class EventsController {
     static async getAll(req, res) {

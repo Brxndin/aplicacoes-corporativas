@@ -1,6 +1,5 @@
-const express = require('express');
-
-const VolunteersController = require('../controllers/volunteersController');
+import express from 'express';
+import VolunteersController from '../controllers/volunteersController.js';
 
 const router = express.Router();
 

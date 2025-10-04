@@ -1,4 +1,4 @@
-import VolunteerServices from '../services/volunteerServices';
+import VolunteerServices from '../services/volunteerServices.js';
 
 class VolunteersController {
     static async getAll(req, res) {

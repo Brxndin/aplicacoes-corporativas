@@ -1,12 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('../node_modules/helmet/index.d.cts');
-const usersRoutes = require('./routes/usersRoutes');
-const authRoutes = require('./routes/authRoutes');
-const eventsRoutes = require('./routes/eventsRoutes');
-const volunteersRoutes = require('./routes/volunteersRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
-const errorMiddleware = require('./middlewares/errorMiddleware');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import usersRoutes from './routes/usersRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import eventsRoutes from './routes/eventsRoutes.js';
+import volunteersRoutes from './routes/volunteersRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+// import errorMiddleware from './middlewares/errorMiddleware.js';
 
 // cria o app com express e configura
 const app = express();
@@ -22,7 +22,7 @@ app.use('/events', eventsRoutes);
 app.use('/volunteers', volunteersRoutes);
 app.use('/dashboard', dashboardRoutes);
 
-// middlewares para tratamento de erros
-app.use(errorMiddleware);
+// // middlewares para tratamento de erros
+// app.use(errorMiddleware);
 
 export default app;
