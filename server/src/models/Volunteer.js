@@ -7,6 +7,18 @@ class Volunteer
 
         return rows;
     }
+
+    static async findByEmail(email) {
+        const [rows] = await db.query('SELECT * FROM voluntarios WHERE email = ?', [email]);
+
+        return rows[0];
+    }
+
+    static async findByCPF(cpf) {
+        const [rows] = await db.query('SELECT * FROM voluntarios WHERE cpf = ?', [cpf]);
+
+        return rows[0];
+    }
     
     static async create(volunteer) {
         const { cpf, nome, email, telefone } = volunteer;

@@ -8,12 +8,18 @@ class VolunteerServices
     }
 
     static async createVolunteer(volunteer) {
-        // verificar qual regra de negócio aplicar
-        // const volunteerExists = await Volunteer.findByEmail(volunteer.email);
+        // verifica se o voluntário já existe por e-mail e por cpf
+        const emailExists = await Volunteer.findByEmail(volunteer.email);
 
-        // if (volunteerExists) {
-        //     throw new Error("Voluntário já cadastrado!");
-        // }
+        if (emailExists) {
+            throw new Error("O e-mail informado já está em uso!");
+        }
+
+        const cpfExists = await Volunteer.findByCPF(volunteer.cpf);
+
+        if (cpfExists) {
+            throw new Error("O CPF informado já está em uso!");
+        }
 
         return await Volunteer.create(volunteer);
     }
@@ -29,6 +35,19 @@ class VolunteerServices
     }
     
     static async updateVolunteer(id, volunteer) {
+        // verifica se o voluntário já existe por e-mail e por cpf
+        const volunteerWithEmail = await Volunteer.findByEmail(volunteer.email);
+
+        if (volunteerWithEmail && volunteerWithEmail.id != id) {
+            throw new Error("O e-mail informado já está em uso!");
+        }
+
+        const volunteerWithCpf = await Volunteer.findByCPF(volunteer.cpf);
+
+        if (volunteerWithCpf && volunteerWithCpf.id != id) {
+            throw new Error("O CPF informado já está em uso!");
+        }
+
         const updatedRows = await Volunteer.update(id, volunteer);
 
         if (updatedRows === 0) {

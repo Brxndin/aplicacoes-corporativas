@@ -13,7 +13,7 @@ class AuthController {
             });
         } catch (error) {
             res.status(500).json({
-                message: 'Ocorreu um erro!',
+                message: error.message,
                 error: error.message
             });
         }

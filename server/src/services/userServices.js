@@ -7,11 +7,11 @@ class UserServices
     }
 
     static async createUser(user) {
-        // verificar qual regra de negócio aplicar
-        const userExists = await User.findByEmail(user.email);
+        // verifica se o usuário já existe por e-mail
+        const emailExists = await User.findByEmail(user.email);
 
-        if (userExists) {
-            throw new Error("Usuário já cadastrado!");
+        if (emailExists) {
+            throw new Error("O e-mail informado já está em uso!");
         }
 
         // seria interessante colocar regra para validar senha com números, letras maiúsculas e minúsuclas e símbolos
@@ -20,6 +20,13 @@ class UserServices
     }
     
     static async updateUser(id, user) {
+        // verifica se o usuário já existe por e-mail e por cpf
+        const userWithEmail = await User.findByEmail(user.email);
+
+        if (userWithEmail && userWithEmail.id != id) {
+            throw new Error("O e-mail informado já está em uso!");
+        }
+
         const updatedRows = await User.update(id, user);
 
         if (updatedRows === 0) {
