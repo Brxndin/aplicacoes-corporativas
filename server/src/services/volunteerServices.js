@@ -3,7 +3,7 @@ import Volunteer from "../models/Volunteer.js";
 
 class VolunteerServices
 {
-    static async getAllVoluteers() {
+    static async getAllVolunteers() {
         return await Volunteer.findAll();
     }
 

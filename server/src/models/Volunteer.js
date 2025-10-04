@@ -11,7 +11,7 @@ class Volunteer
     static async create(volunteer) {
         const { cpf, nome, email, telefone } = volunteer;
 
-        const [result] = await db.query('INSERT INTO voluntarios (cfp, nome, email, telefone) VALUES (?, ?, ?, ?)', [cpf, nome, email, telefone]);
+        const [result] = await db.query('INSERT INTO voluntarios (cpf, nome, email, telefone) VALUES (?, ?, ?, ?)', [cpf, nome, email, telefone]);
 
         // retorna o id do registro recém criado
         return result.insertId;
