@@ -3,15 +3,15 @@ import api from "../config/api";
 import { useNavigate } from "react-router-dom";
 import ListLayout from "../components/ListLayout";
 
-export default function UserList() {
-  const [users, setUsers] = useState([]);
+export default function VolunteerList() {
+  const [volunteers, setVolunteers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     api
-      .get("/users")
+      .get("/volunteers")
       .then((res) => {
-        setUsers((prevState) => {
+        setVolunteers((prevState) => {
           return [...prevState, ...res.data];
         });
       })
@@ -22,12 +22,12 @@ export default function UserList() {
 
   const handleDelete = (id) => {
     api
-      .delete(`/users/${id}`)
+      .delete(`/volunteers/${id}`)
       .then((res) => {
         if (res.status == 200) {
-          alert("Usuário removido com sucesso!");
+          alert("Voluntário removido com sucesso!");
 
-          setUsers(users.filter((user) => user.id != id));
+          setVolunteers(volunteers.filter((user) => user.id != id));
         }
       })
       .catch((error) => {
@@ -37,23 +37,24 @@ export default function UserList() {
 
   return (
     <div>
-      <h2>Listagem de Usuários</h2>
+      <h2>Listagem de Voluntários</h2>
       <button
         onClick={() => {
-          navigate(`/users/form`);
+          navigate(`/volunteers/form`);
         }}
       >
         Cadastrar Novo
       </button>
       <ListLayout
-        data={users}
+        data={volunteers}
         columnsAndNames={[
+          { column: "CPF", nameInForm: "cpf" },
           { column: "Nome", nameInForm: "nome" },
           { column: "E-mail", nameInForm: "email" },
-          { column: "Tipo", nameInForm: "tipo" },
+          { column: "Telefone", nameInForm: "telefone" },
         ]}
-        emptyMessage={"Não há nenhum usuário cadastrado!"}
-        linkShow={"/users/form"}
+        emptyMessage={"Não há nenhum voluntário cadastrado!"}
+        linkShow={"/volunteers/form"}
         useActions={true}
         handleDelete={handleDelete}
       />

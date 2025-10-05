@@ -3,15 +3,15 @@ import api from "../config/api";
 import { useNavigate } from "react-router-dom";
 import ListLayout from "../components/ListLayout";
 
-export default function UserList() {
-  const [users, setUsers] = useState([]);
+export default function EventList() {
+  const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     api
-      .get("/users")
+      .get("/events")
       .then((res) => {
-        setUsers((prevState) => {
+        setEvents((prevState) => {
           return [...prevState, ...res.data];
         });
       })
@@ -22,12 +22,12 @@ export default function UserList() {
 
   const handleDelete = (id) => {
     api
-      .delete(`/users/${id}`)
+      .delete(`/events/${id}`)
       .then((res) => {
         if (res.status == 200) {
-          alert("Usuário removido com sucesso!");
+          alert("Evento removido com sucesso!");
 
-          setUsers(users.filter((user) => user.id != id));
+          setEvents(events.filter((user) => user.id != id));
         }
       })
       .catch((error) => {
@@ -37,23 +37,24 @@ export default function UserList() {
 
   return (
     <div>
-      <h2>Listagem de Usuários</h2>
+      <h2>Listagem de Eventos</h2>
       <button
         onClick={() => {
-          navigate(`/users/form`);
+          navigate(`/events/form`);
         }}
       >
         Cadastrar Novo
       </button>
       <ListLayout
-        data={users}
+        data={events}
         columnsAndNames={[
           { column: "Nome", nameInForm: "nome" },
-          { column: "E-mail", nameInForm: "email" },
-          { column: "Tipo", nameInForm: "tipo" },
+          { column: "Descrição", nameInForm: "descricao" },
+          { column: "Data e Hora de Início", nameInForm: "data_hora_inicio" },
+          { column: "Data e Hora de Término", nameInForm: "data_hora_fim" },
         ]}
-        emptyMessage={"Não há nenhum usuário cadastrado!"}
-        linkShow={"/users/form"}
+        emptyMessage={"Não há nenhum evento cadastrado!"}
+        linkShow={"/events/form"}
         useActions={true}
         handleDelete={handleDelete}
       />
