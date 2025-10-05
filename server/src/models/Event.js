@@ -3,7 +3,12 @@ import db from '../config/database.js';
 class Event
 {
     static async findAll() {
-        const [rows] = await db.query('SELECT * FROM eventos');
+        const query = `
+            SELECT *
+            FROM eventos
+        `;
+
+        const [rows] = await db.query(query);
 
         return rows;
     }
@@ -11,7 +16,13 @@ class Event
     static async create(evento) {
         const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const [result] = await db.query('INSERT INTO eventos (nome, descricao, data_hora_inicio, data_hora_fim) VALUES (?, ?, ?, ?)', [nome, descricao, data_hora_inicio, data_hora_fim]);
+        const query = `
+            INSERT INTO eventos
+            (nome, descricao, data_hora_inicio, data_hora_fim)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        const [result] = await db.query(query, [nome, descricao, data_hora_inicio, data_hora_fim]);
 
         // retorna o id do registro recém criado
         return result.insertId;
@@ -20,13 +31,24 @@ class Event
     static async update(id, evento) {
         const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const [result] = await db.query('UPDATE eventos SET nome = ?, descricao = ?, data_hora_inicio = ?, data_hora_fim = ? WHERE id = ? ', [nome, descricao, data_hora_inicio, data_hora_fim, id]);
+        const query = `
+            UPDATE eventos
+            SET nome = ?, descricao = ?, data_hora_inicio = ?, data_hora_fim = ?
+            WHERE id = ? 
+        `;
+
+        const [result] = await db.query(query, [nome, descricao, data_hora_inicio, data_hora_fim, id]);
 
         return result.affectedRows;
     }
     
     static async delete(id) {
-        const [result] = await db.query('DELETE FROM eventos WHERE id = ?', [id]);
+        const query = `
+            DELETE FROM eventos
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query(query, [id]);
 
         return result.affectedRows;
     }

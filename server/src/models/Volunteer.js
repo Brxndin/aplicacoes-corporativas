@@ -3,19 +3,36 @@ import db from '../config/database.js';
 class Volunteer
 {
     static async findAll() {
-        const [rows] = await db.query('SELECT * FROM voluntarios');
+        const query = `
+            SELECT *
+            FROM voluntarios
+        `;
+
+        const [rows] = await db.query(query);
 
         return rows;
     }
 
     static async findByEmail(email) {
-        const [rows] = await db.query('SELECT * FROM voluntarios WHERE email = ?', [email]);
+        const query = `
+            SELECT *
+            FROM voluntarios
+            WHERE email = ?
+        `;
+
+        const [rows] = await db.query(query, [email]);
 
         return rows[0];
     }
 
     static async findByCPF(cpf) {
-        const [rows] = await db.query('SELECT * FROM voluntarios WHERE cpf = ?', [cpf]);
+        const query = `
+            SELECT *
+            FROM voluntarios
+            WHERE cpf = ?
+        `;
+
+        const [rows] = await db.query(query, [cpf]);
 
         return rows[0];
     }
@@ -23,7 +40,13 @@ class Volunteer
     static async create(volunteer) {
         const { cpf, nome, email, telefone } = volunteer;
 
-        const [result] = await db.query('INSERT INTO voluntarios (cpf, nome, email, telefone) VALUES (?, ?, ?, ?)', [cpf, nome, email, telefone]);
+        const query = `
+            INSERT INTO voluntarios
+            (cpf, nome, email, telefone)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        const [result] = await db.query(query, [cpf, nome, email, telefone]);
 
         // retorna o id do registro recém criado
         return result.insertId;
@@ -32,13 +55,24 @@ class Volunteer
     static async update(id, volunteer) {
         const { cpf, nome, email, telefone } = volunteer;
 
-        const [result] = await db.query('UPDATE voluntarios SET cpf = ?, nome = ?, email = ?, telefone = ? WHERE id = ? ', [cpf, nome, email, telefone, id]);
+        const query = `
+            UPDATE voluntarios
+            SET cpf = ?, nome = ?, email = ?, telefone = ?
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query(query, [cpf, nome, email, telefone, id]);
 
         return result.affectedRows;
     }
     
     static async delete(id) {
-        const [result] = await db.query('DELETE FROM voluntarios WHERE id = ?', [id]);
+        const query = `
+            DELETE FROM voluntarios
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query(query, [id]);
 
         return result.affectedRows;
     }

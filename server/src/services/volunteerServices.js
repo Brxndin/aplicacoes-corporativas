@@ -25,7 +25,7 @@ class VolunteerServices
     }
 
     static async addInEvent(volunteerEvent) {
-        const volunteerEventExists = await Volunteer.findByEvent(volunteerEvent);
+        const volunteerEventExists = await VolunteerEvent.findVolunteerByEvent(volunteerEvent);
 
         if (volunteerEventExists) {
             throw new Error("Voluntário já cadastrado nesse evento!");
