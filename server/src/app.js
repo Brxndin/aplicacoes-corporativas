@@ -6,7 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import eventsRoutes from './routes/eventsRoutes.js';
 import volunteersRoutes from './routes/volunteersRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
-// import errorMiddleware from './middlewares/errorMiddleware.js';
+import verifyJWT from './middlewares/verifyJWT.js';
 
 // cria o app com express e configura
 const app = express();
@@ -20,7 +20,7 @@ app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
 app.use('/events', eventsRoutes);
 app.use('/volunteers', volunteersRoutes);
-app.use('/dashboard', dashboardRoutes);
+app.use('/dashboard', verifyJWT, dashboardRoutes);
 
 // // middlewares para tratamento de erros
 // app.use(errorMiddleware);

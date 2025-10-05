@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 
 class AuthServices
 {
@@ -12,9 +14,22 @@ class AuthServices
             throw new Error("Dados incorretos!");
         }
 
-        // verificar se aqui já vai trabalhar com o JWT
+        // aqui chamo de payload mas é o que vai ser transformado em token
+        const payload = {
+            id: usuario.id,
+            name: usuario.nome,
+            role: usuario.tipo,
+        };
 
-        return usuario;
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expires: '1h'
+        });
+
+        return res.json({
+            message: 'Login realizado com sucesso!',
+            auth: true,
+            token: token,
+        });
     }
 }
 
