@@ -22,14 +22,13 @@ class AuthServices
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expires: '1h'
+            expiresIn: '1h'
         });
 
-        return res.json({
-            message: 'Login realizado com sucesso!',
-            auth: true,
-            token: token,
-        });
+        return {
+            payload: payload,
+            token: token
+        };
     }
 }
 
