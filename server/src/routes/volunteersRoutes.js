@@ -4,6 +4,7 @@ import VolunteersController from '../controllers/volunteersController.js';
 const router = express.Router();
 
 router.get('/', VolunteersController.getAll);
+router.get('/:id', VolunteersController.getOne);
 router.post('/', VolunteersController.create);
 router.post('/addInEvent', VolunteersController.addInEvent);
 router.put('/:id', VolunteersController.update);

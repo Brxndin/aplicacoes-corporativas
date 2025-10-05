@@ -10,6 +10,18 @@ class UsersController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    static async getOne(req, res) {
+        try {
+            const id = req.params.id;
+
+            const user = await UserServices.getOneUser(id);
+
+            res.json(user);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
     
     static async create(req, res) {
         try {

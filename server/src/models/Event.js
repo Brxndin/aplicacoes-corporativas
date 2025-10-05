@@ -12,6 +12,18 @@ class Event
 
         return rows;
     }
+
+    static async find(id) {
+        const query = `
+            SELECT *
+            FROM eventos
+            WHERE id = ?
+        `;
+
+        const [rows] = await db.query(query, [id]);
+
+        return rows;
+    }
     
     static async create(evento) {
         const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;

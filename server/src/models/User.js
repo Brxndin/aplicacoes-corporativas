@@ -13,6 +13,18 @@ class User
         return rows;
     }
 
+    static async find(id) {
+        const query = `
+            SELECT *
+            FROM usuarios
+            WHERE id = ?
+        `;
+
+        const [rows] = await db.query(query, [id]);
+
+        return rows;
+    }
+
     static async findByEmail(email) {
         const query = `
             SELECT *

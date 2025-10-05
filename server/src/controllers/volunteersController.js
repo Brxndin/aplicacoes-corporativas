@@ -10,6 +10,18 @@ class VolunteersController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    static async getOne(req, res) {
+        try {
+            const id = req.params.id;
+
+            const volunteer = await VolunteerServices.getOneVolunteer(id);
+
+            res.json(volunteer);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
     
     static async create(req, res) {
         try {

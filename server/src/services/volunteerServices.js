@@ -7,6 +7,18 @@ class VolunteerServices
         return await Volunteer.findAll();
     }
 
+    static async getOneVolunteer(id) {
+        const volunteers = await Volunteer.find(id);
+
+        if (volunteers.length != 1) {
+            throw new Error('Voluntário não encontrado!');
+        }
+
+        const volunteer = volunteers[0];
+
+        return volunteer;
+    }
+
     static async createVolunteer(volunteer) {
         // verifica se o voluntário já existe por e-mail e por cpf
         const emailExists = await Volunteer.findByEmail(volunteer.email);

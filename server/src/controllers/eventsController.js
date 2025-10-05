@@ -10,6 +10,18 @@ class EventsController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    static async getOne(req, res) {
+        try {
+            const id = req.params.id;
+
+            const event = await EventServices.getOneEvent(id);
+
+            res.json(event);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
     
     static async create(req, res) {
         try {

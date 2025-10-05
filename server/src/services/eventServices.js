@@ -6,6 +6,18 @@ class EventServices
         return await Event.findAll();
     }
 
+    static async getOneEvent(id) {
+        const events = await Event.find(id);
+
+        if (events.length != 1) {
+            throw new Error('Evento não encontrado!');
+        }
+
+        const event = events[0];
+
+        return event;
+    }
+
     static async createEvent(event) {
         // verificar qual regra de negócio aplicar
         // const eventExists = await Event.findByEmail(user.email);
