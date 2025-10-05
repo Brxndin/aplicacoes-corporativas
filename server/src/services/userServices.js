@@ -3,11 +3,35 @@ import User from "../models/User.js";
 class UserServices
 {
     // constantes para o tipo de usuário
-    ADM = 1;
-    PADRAO = 2;
+    static ADM = 1;
+    static PADRAO = 2;
 
     static async getAllUsers() {
-        return await User.findAll();
+        const users = await User.findAll();
+
+        // aqui traduz o tipo conforme as constantes
+        users.map((user) => {
+            user.tipo = user.tipo == this.ADM ? 'Administrador' : 'Padrão';
+
+            return user;
+        });
+
+        return users;
+    }
+
+    static async getOneUser(id) {
+        const users = await User.find(id);
+
+        if (users.length != 1) {
+            throw new Error('Usuário não encontrado!');
+        }
+
+        const user = users[0];
+
+        // aqui traduz o tipo conforme as constantes
+        user.tipo = user.tipo == this.ADM ? 'Administrador' : 'Padrão';
+
+        return user;
     }
 
     static async createUser(user) {
@@ -17,8 +41,8 @@ class UserServices
         if (emailExists) {
             throw new Error("O e-mail informado já está em uso!");
         }
-        
-        if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
+
+        if (![this.ADM, this.PADRAO].includes(parseInt(user.tipo))) {
             throw new Error("O usuário deve ser Administrador ou Padrão!");
         }
 
