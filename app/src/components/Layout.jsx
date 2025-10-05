@@ -11,7 +11,8 @@ export default function Layout() {
       </main>
 
       <footer style={{ padding: '10px', backgroundColor: '#eee', textAlign: 'center' }}>
-        <p>&copy; 2025 Pindorama</p>
+        <p>&copy; 2025 Pindorama | Todos os direitos reservados.</p>
+        <p>Feito por Brandin</p>
       </footer>
     </>
   );
