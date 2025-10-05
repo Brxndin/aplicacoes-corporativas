@@ -2,6 +2,10 @@ import User from "../models/User.js";
 
 class UserServices
 {
+    // constantes para o tipo de usuário
+    ADM = 1;
+    PADRAO = 2;
+
     static async getAllUsers() {
         return await User.findAll();
     }
@@ -12,6 +16,10 @@ class UserServices
 
         if (emailExists) {
             throw new Error("O e-mail informado já está em uso!");
+        }
+        
+        if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
+            throw new Error("O usuário deve ser Administrador ou Padrão!");
         }
 
         // seria interessante colocar regra para validar senha com números, letras maiúsculas e minúsuclas e símbolos
@@ -25,6 +33,10 @@ class UserServices
 
         if (userWithEmail && userWithEmail.id != id) {
             throw new Error("O e-mail informado já está em uso!");
+        }
+
+        if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
+            throw new Error("O usuário deve ser Administrador ou Padrão!");
         }
 
         const updatedRows = await User.update(id, user);

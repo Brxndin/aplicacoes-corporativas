@@ -3,36 +3,64 @@ import db from '../config/database.js';
 class User
 {
     static async findAll() {
-        const [rows] = await db.query('SELECT * FROM usuarios');
+        const query = `
+            SELECT *
+            FROM usuarios
+        `;
+
+        const [rows] = await db.query(query);
 
         return rows;
     }
 
     static async findByEmail(email) {
-        const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+        const query = `
+            SELECT *
+            FROM usuarios
+            WHERE email = ?
+        `;
+
+        const [rows] = await db.query(query, [email]);
 
         return rows[0];
     }
     
     static async create(usuario) {
-        const { nome, email, senha } = usuario;
+        const { nome, email, tipo, senha } = usuario;
 
-        const [result] = await db.query('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senha]);
+        const query = `
+            INSERT INTO usuarios
+            (nome, email, tipo, senha)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        const [result] = await db.query(query, [nome, email, tipo, senha]);
 
         // retorna o id do registro recém criado
         return result.insertId;
     }
     
     static async update(id, usuario) {
-        const { nome, email, senha } = usuario;
+        const { nome, email, tipo, senha } = usuario;
 
-        const [result] = await db.query('UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ? ', [nome, email, senha, id]);
+        const query = `
+            UPDATE usuarios
+            SET nome = ?, email = ?, tipo = ?, senha = ?
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query(query, [nome, email, tipo, senha, id]);
 
         return result.affectedRows;
     }
     
     static async delete(id) {
-        const [result] = await db.query('DELETE FROM usuarios WHERE id = ?', [id]);
+        const query = `
+            DELETE FROM usuarios
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query(query, [id]);
 
         return result.affectedRows;
     }
