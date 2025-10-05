@@ -3,14 +3,14 @@ import { useParams } from "react-router-dom";
 import FormLayout from "../components/FormLayout";
 import api from "../config/api";
 
-export default function UserForm() {
+export default function EventForm() {
   const [form, setForm] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
       api
-        .get(`/users/${id}`)
+        .get(`/events/${id}`)
         .then((res) => {
           setForm(res.data);
         })
@@ -25,11 +25,11 @@ export default function UserForm() {
 
     if (id) {
       api
-        .put(`/users/${id}`, form)
+        .put(`/events/${id}`, form)
         .then((res) => {
           console.log(res)
 
-          alert("Usuário atualizado com sucesso!");
+          alert("Evento atualizado com sucesso!");
         })
         .catch((error) => {
           let dadosRetorno = error.response.data;
@@ -38,11 +38,11 @@ export default function UserForm() {
         });
     } else {
       api
-        .post(`/users`, form)
+        .post(`/events`, form)
         .then((res) => {
           console.log(res)
 
-          alert("Usuário cadastrado com sucesso!");
+          alert("Evento cadastrado com sucesso!");
 
           setForm({});
         })
@@ -60,20 +60,17 @@ export default function UserForm() {
 
   return (
     <div>
-      <h2>Cadastro de Usuários</h2>
+      <h2>Cadastro de Eventos</h2>
       <FormLayout
         data={form}
         componentsAndNames={[
           { label: "Nome", name: "nome", type: "text", required: true },
-          { label: "E-mail", name: "email", type: "email", required: true },
-          { label: "Tipo", name: "tipo", type: "select", required: true, options: [
-            { value: 1, text: "Administrador" },
-            { value: 2, text: "Padrão" },
-          ] },
-          { label: "Senha", name: "senha", type: "password", required: true },
+          { label: "Descrição", name: "descricao", type: "text", required: true },
+          { label: "Data e Hora de Início", name: "data_hora_inicio", type: "datetime", required: true },
+          { label: "Data e Hora de Término", name: "data_hora_fim", type: "datetime", required: true },
         ]}
         textSubmit={id ? 'Atualizar' : "Cadastrar"}
-        linkReturn={"/users"}
+        linkReturn={"/events"}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
       />
