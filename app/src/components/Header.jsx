@@ -17,14 +17,20 @@ export default function Header() {
   return (
     <header style={navStyle}>
       <Link to="/" style={linkStyle}>Home</Link>
-      <Link to="/users" style={linkStyle}>Usuários</Link>
-      {/* <Link to="/volunteers" style={linkStyle}>Voluntários</Link>
-      <Link to="/events" style={linkStyle}>Eventos</Link>
-      <Link to="/dashboard" style={linkStyle}>Dashboard</Link> */}
+      
+      {localStorage.getItem('auth') == 'true' && (
+        <>
+          <Link to="/volunteers" style={linkStyle}>Voluntários</Link>
+          <Link to="/events" style={linkStyle}>Eventos</Link>
+          {/* aqui, além do filtro de login, tem que ter o filtro de admin */}
+          <Link to="/users" style={linkStyle}>Usuários</Link>
+          <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
+        </>
+      )}
 
-      {/* esse aqui embaixo ou irão em botões ou serão protegidos por adm */}
-      {/* <Link to="/events/form/?:id" style={linkStyle}>Cadastrar Evento</Link>
-      <Link to="/volunteers/form/?:id" style={linkStyle}>Cadastrar Voluntário</Link> */}
+      {localStorage.getItem('auth') != 'true' && (
+        <Link to="/login" style={linkStyle}>Login</Link>
+      )}
     </header>
   );
 }
