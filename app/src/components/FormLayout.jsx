@@ -21,7 +21,7 @@ export default function FormLayout({
         return (
           <div>
             <label>{value.label}</label>
-            {["text", "email", "password", "datetime"].includes(value.type) && (
+            {["text", "email", "password", "datetime-local"].includes(value.type) && (
               <input
                 type={value.type}
                 name={value.name}
