@@ -5,8 +5,6 @@ import Layout from './components/Layout';
 
 // páginas
 import Home from './pages/Home';
-// import Login from './pages/Login';
-// import Dashboard from './pages/Dashboard';
 import UserForm from './pages/UserForm';
 import UserList from './pages/UserList';
 import EventList from './pages/EventList';
@@ -19,7 +17,7 @@ import Dashboard from './pages/Dashboard';
 
 const router = createBrowserRouter([
   {
-    path: "/", 
+    path: '/', 
     // aqui é o layout padrão
     element: <Layout/>,
     
@@ -30,47 +28,47 @@ const router = createBrowserRouter([
         element: <Home/>,
       },
       {
-        path: "login",
+        path: 'login',
         element: <Login/>,
       },
       {
-        path: "logout",
+        path: 'logout',
         element: <Logout/>,
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         element: <Dashboard/>,
       },
       {
-        path: "users",
+        path: 'users',
         element: <UserList/>,
       },
       {
-        path: "users/form/:id?",
+        path: 'users/form/:id?',
         element: <UserForm/>,
       },
       {
-        path: "events",
+        path: 'events',
         element: <EventList/>,
       },
       {
-        path: "events/form/:id?",
+        path: 'events/form/:id?',
         element: <EventForm/>,
       },
       {
-        path: "volunteers",
+        path: 'volunteers',
         element: <VolunteerList/>,
       },
       {
-        path: "volunteers/form/:id?",
+        path: 'volunteers/form/:id?',
         element: <VolunteerForm/>,
       },
       {
-        path: "forbidden",
+        path: 'forbidden',
         element: <h1>Acesso negado: você não tem permissão para acessar essa tela!</h1>,
       },
       {
-        path: "*",
+        path: '*',
         element: <h1>404: Página Não Encontrada!</h1>,
       },
     ],
