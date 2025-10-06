@@ -28,9 +28,6 @@ class UserServices
 
         const user = users[0];
 
-        // aqui traduz o tipo conforme as constantes
-        user.tipo = user.tipo == this.ADM ? 'Administrador' : 'Padrão';
-
         return user;
     }
 

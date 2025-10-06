@@ -2,8 +2,21 @@ import Event from "../models/Event.js";
 
 class EventServices
 {
+    static formatDateTime(dateString) {
+        const newDate = new Date(dateString);
+
+        return `${newDate.toLocaleDateString('pt-BR')} ${newDate.toLocaleTimeString('pt-BR')}`;
+    }
+
     static async getAllEvents() {
-        return await Event.findAll();
+        const events =  await Event.findAll();
+
+        events.map((event) => {
+            event.data_hora_inicio = this.formatDateTime(event.data_hora_inicio);
+            event.data_hora_fim = this.formatDateTime(event.data_hora_fim);
+        });
+
+        return events;
     }
 
     static async getOneEvent(id) {
