@@ -17,9 +17,9 @@ app.use(express.json());
 
 // rotas da api
 app.use('/auth', authRoutes);
-app.use('/users', usersRoutes);
-app.use('/events', eventsRoutes);
-app.use('/volunteers', volunteersRoutes);
+app.use('/users', verifyJWT, usersRoutes);
+app.use('/events', verifyJWT, eventsRoutes);
+app.use('/volunteers', verifyJWT, volunteersRoutes);
 app.use('/dashboard', verifyJWT, dashboardRoutes);
 
 // // middlewares para tratamento de erros

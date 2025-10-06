@@ -20,11 +20,6 @@ class EventServices
 
     static async createEvent(event) {
         // verificar qual regra de negócio aplicar
-        // const eventExists = await Event.findByEmail(user.email);
-
-        // if (eventExists) {
-        //     throw new Error("Evento já cadastrado!");
-        // }
 
         return await Event.create(event);
     }
