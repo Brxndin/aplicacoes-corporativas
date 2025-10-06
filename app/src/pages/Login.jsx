@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import FormLayout from "../components/FormLayout";
 import api from "../config/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Login() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const isAuth = localStorage.getItem('auth') == 'true';
+  const { authState, setAuthState } = useAuth();
 
+  useEffect(() => {
     // se o usuário está autenticado, redireciona ele pra página principal
-    if (isAuth) {
+    if (authState.auth) {
         // navigate('/dashboard');
         navigate('/');
     }
-  }, [navigate]);
+  }, [authState, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,11 +29,11 @@ export default function Login() {
             // verificar se aqui da pra fazer o salvamento do token no localStorage
             alert(dadosRetorno.message);
 
-            localStorage.setItem('token', dadosRetorno.token);
-            localStorage.setItem('user', JSON.stringify(dadosRetorno.user));
-            localStorage.setItem('auth', dadosRetorno.auth);
-
-            navigate('/home');
+            setAuthState({
+                token: dadosRetorno.token,
+                user: dadosRetorno.user,
+                auth: dadosRetorno.auth,
+            });
         })
         .catch((error) => {
             let dadosRetorno = error.response.data;

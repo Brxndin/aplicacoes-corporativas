@@ -14,6 +14,8 @@ import VolunteerList from './pages/VolunteerList';
 import EventForm from './pages/EventForm';
 import VolunteerForm from './pages/VolunteerForm';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
+import Dashboard from './pages/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -31,10 +33,14 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login/>,
       },
-      // {
-      //   path: "dashboard",
-      //   element: <Dashboard/>,
-      // },
+      {
+        path: "logout",
+        element: <Logout/>,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard/>,
+      },
       {
         path: "users",
         element: <UserList/>,
@@ -58,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "volunteers/form/:id?",
         element: <VolunteerForm/>,
+      },
+      {
+        path: "forbidden",
+        element: <h1>Acesso negado: você não tem permissão para acessar essa tela!</h1>,
       },
       {
         path: "*",

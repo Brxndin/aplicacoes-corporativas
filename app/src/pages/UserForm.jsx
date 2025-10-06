@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormLayout from "../components/FormLayout";
 import api from "../config/api";
+import { useAuth } from "../auth/AuthContext";
 
 export default function UserForm() {
   const [form, setForm] = useState({});
   const { id } = useParams();
+  const { authState } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!authState.auth) {
+      navigate('/forbidden');
+    }
+
     if (id) {
       api
         .get(`/users/${id}`)
@@ -18,7 +25,7 @@ export default function UserForm() {
           console.log(error);
         });
     }
-  }, [id]);
+  }, [id, navigate, authState]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
