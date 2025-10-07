@@ -29,7 +29,7 @@ export default function ListLayout({
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [linkGetData]);
 
   const handleDelete = (id) => {
     api
