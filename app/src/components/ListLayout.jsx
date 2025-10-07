@@ -1,15 +1,65 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../config/api";
 
 // aqui eu decidi fazer uma lista padrão pra não repetir o código tantas vezes
 export default function ListLayout({
-  data,
+  title,
   columnsAndNames,
   emptyMessage,
-  linkShow,
   useActions,
-  handleDelete,
+  linkGetData,
+  linkNew,
+  linkShow,
+  linkDelete,
 }) {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    api
+      .get(linkGetData)
+      .then((res) => {
+        setData((prevState) => {
+          return [...prevState, ...res.data];
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const handleDelete = (id) => {
+    api
+      .delete(`${linkDelete}/${id}`)
+      .then((res) => {
+        if (res.status == 200) {
+          alert(res.data.message);
+
+          setData(data.filter((item) => item.id != id));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // sistema de pesquisa
+  const newData = data.filter((item) => {
+    let bool = false;
+
+    columnsAndNames.map((value) => {
+      bool = bool || (item[value.nameInForm].toLowerCase().includes(search.toLowerCase()));
+    })
+
+    return bool;
+  });
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
 
 //   const style = {
 //     display: "flex",
@@ -17,7 +67,26 @@ export default function ListLayout({
 
   return (
     <>
-      {data.length > 0 && (
+      <h2>{title}</h2>
+      <button
+        onClick={() => {
+          navigate(linkNew);
+        }}
+      >
+        Cadastrar Novo
+      </button>
+      <br/>
+      <br/>
+      <input
+        type={'text'}
+        name={'pesquisa'}
+        value={search}
+        onChange={handleChange}
+        placeholder="Pesquisar"
+      />
+      <br/>
+      <br/>
+      {newData.length > 0 && (
         <table>
           <thead>
             <tr>
@@ -28,17 +97,17 @@ export default function ListLayout({
             </tr>
           </thead>
           <tbody>
-            {data.map((d) => (
+            {newData.map((item) => (
               <tr
-                key={d.id}
+                key={item.id}
                 onClick={() => {
-                  navigate(`${linkShow}/${d.id}`);
+                  navigate(`${linkShow}/${item.id}`);
                 }}
                 // aqui é só pra saber que se clicar tem uma ação
                 style={{ cursor: "pointer" }}
               >
                 {columnsAndNames.map((value) => (
-                  <td>{d[value.nameInForm]}</td>
+                  <td>{item[value.nameInForm]}</td>
                 ))}
 
                 {useActions && (
@@ -48,7 +117,7 @@ export default function ListLayout({
                         // aqui serve pro onclick da linha ser interrompido
                         e.stopPropagation();
 
-                        handleDelete(d.id);
+                        handleDelete(item.id);
                       }}
                     >
                       Excluir
@@ -60,7 +129,7 @@ export default function ListLayout({
           </tbody>
         </table>
       )}
-      {data.length <= 0 && <p>{emptyMessage}</p>}
+      {newData.length <= 0 && <p>{emptyMessage}</p>}
     </>
   );
 }

@@ -1,52 +1,10 @@
-import { useEffect, useState } from "react";
-import api from "../config/api";
-import { useNavigate } from "react-router-dom";
 import ListLayout from "../components/ListLayout";
 
 export default function UserList() {
-  const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    api
-      .get("/users")
-      .then((res) => {
-        setUsers((prevState) => {
-          return [...prevState, ...res.data];
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const handleDelete = (id) => {
-    api
-      .delete(`/users/${id}`)
-      .then((res) => {
-        if (res.status == 200) {
-          alert("Usuário removido com sucesso!");
-
-          setUsers(users.filter((user) => user.id != id));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   return (
     <div>
-      <h2>Listagem de Usuários</h2>
-      <button
-        onClick={() => {
-          navigate(`/users/form`);
-        }}
-      >
-        Cadastrar Novo
-      </button>
       <ListLayout
-        data={users}
+        title={'Listagem de Usuários'}
         columnsAndNames={[
           { column: "Nome", nameInForm: "nome" },
           { column: "E-mail", nameInForm: "email" },
@@ -54,8 +12,10 @@ export default function UserList() {
         ]}
         emptyMessage={"Não há nenhum usuário cadastrado!"}
         linkShow={"/users/form"}
+        linkDelete={"/users"}
+        linkGetData={"/users"}
+        linkNew={"/users/form"}
         useActions={true}
-        handleDelete={handleDelete}
       />
     </div>
   );
