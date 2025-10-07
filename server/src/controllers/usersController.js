@@ -30,7 +30,7 @@ class UsersController {
 
             const id = await UserServices.createUser(req.body);
 
-            res.status(201).json({ message: 'Usuário criado com sucesso.', id });
+            res.status(201).json({ message: 'Usuário criado com sucesso!', id });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -45,7 +45,7 @@ class UsersController {
 
             await UserServices.updateUser(id, req.body);
 
-            res.json({ message: 'Usuário atualizado com sucesso.' });
+            res.json({ message: 'Usuário atualizado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -57,7 +57,7 @@ class UsersController {
             
             await UserServices.deleteUser(id);
 
-            res.json({ message: 'Usuário deletado com sucesso.' });
+            res.json({ message: 'Usuário deletado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

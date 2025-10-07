@@ -36,7 +36,7 @@ class EventsController {
 
             const id = await EventServices.createEvent(req.body);
 
-            res.status(201).json({ message: 'Evento criado com sucesso.', id });
+            res.status(201).json({ message: 'Evento criado com sucesso!', id });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -51,7 +51,7 @@ class EventsController {
 
             await EventServices.updateEvent(id, req.body);
 
-            res.json({ message: 'Evento atualizado com sucesso.' });
+            res.json({ message: 'Evento atualizado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -63,7 +63,7 @@ class EventsController {
             
             await EventServices.deleteEvent(id);
 
-            res.json({ message: 'Evento deletado com sucesso.' });
+            res.json({ message: 'Evento deletado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

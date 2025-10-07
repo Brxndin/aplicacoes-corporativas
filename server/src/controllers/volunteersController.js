@@ -58,7 +58,7 @@ class VolunteersController {
 
             await VolunteerServices.updateVolunteer(id, req.body);
 
-            res.json({ message: 'Voluntário atualizado com sucesso.' });
+            res.json({ message: 'Voluntário atualizado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -70,7 +70,7 @@ class VolunteersController {
             
             await VolunteerServices.deleteVolunteer(id);
 
-            res.json({ message: 'Voluntário deletado com sucesso.' });
+            res.json({ message: 'Voluntário deletado com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
