@@ -1,7 +1,14 @@
 import db from '../config/database.js';
 
+/**
+ * @classdesc Classe com as funções de banco de dados das relações entre voluntários e eventos
+ */
 class VolunteerEvent
 {
+    /**
+     * Busca uma lista com todas as relações entre voluntários e eventos.
+     * @returns {array} Lista de usuários.
+     */
     static async findAll() {
         const query = `
             SELECT *
@@ -13,6 +20,11 @@ class VolunteerEvent
         return rows;
     }
 
+    /**
+     * Busca as relações entre voluntários e eventos pelo id do evento e id do voluntário
+     * @param {json} volunteerEvent - Dados do voluntário e evento.
+     * @returns {array} Lista de objetos da relação entre voluntários e eventos.
+     */
     static async findVolunteerByEvent(volunteerEvent) {
         const { volunteerId, eventId } = volunteerEvent;
 
@@ -28,6 +40,11 @@ class VolunteerEvent
         return rows;
     }
 
+    /**
+     * Busca as relações entre voluntários e eventos pelo id do voluntário e data e hora de início e término
+     * @param {json} volunteerEvent - Dados do voluntário e evento.
+     * @returns {json} Lista de objetos da relação entre voluntários e eventos.
+     */
     static async findVolunteerEventByHours(volunteerEvent) {
         const { volunteerId, eventId, dataHoraInicio, dataHoraFim } = volunteerEvent;
 
@@ -45,6 +62,11 @@ class VolunteerEvent
         return rows;
     }
     
+    /**
+     * Insere uma nova relação entre voluntário e evento.
+     * @param {json} volunteerEvent - Objeto com as informações do voluntário e evento.
+     * @return {number} O id da nova relação entre voluntário e evento.
+     */
     static async create(volunteerEvent) {
         const { volunteerId, eventId } = volunteerEvent;
 
@@ -60,6 +82,11 @@ class VolunteerEvent
         return result.insertId;
     }
     
+    /**
+     * Deleta os dados de uma relação entre voluntário e evento.
+     * @param {number} id - Id da relação entre voluntário e evento.
+     * @returns {json} Rows afetadas.
+     */
     static async delete(id) {
         const query = `
             DELETE FROM voluntario_eventos

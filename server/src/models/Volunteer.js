@@ -1,7 +1,14 @@
 import db from '../config/database.js';
 
+/**
+ * @classdesc Classe com as funções de banco de dados de voluntários
+ */
 class Volunteer
 {
+    /**
+     * Busca uma lista com todos os voluntários.
+     * @returns {array} Lista de voluntários.
+     */
     static async findAll() {
         const query = `
             SELECT *
@@ -13,6 +20,11 @@ class Volunteer
         return rows;
     }
 
+    /**
+     * Busca um voluntário por id
+     * @param {number} id - O id do voluntário.
+     * @returns {json} O objeto do voluntário.
+     */
     static async find(id) {
         const query = `
             SELECT *
@@ -25,6 +37,11 @@ class Volunteer
         return rows;
     }
 
+    /**
+     * Busca um voluntário por email
+     * @param {string} email - O email do voluntário.
+     * @returns {json} O objeto do voluntário.
+     */
     static async findByEmail(email) {
         const query = `
             SELECT *
@@ -37,6 +54,11 @@ class Volunteer
         return rows[0];
     }
 
+    /**
+     * Busca um voluntário por CPF
+     * @param {string} cpf - O cpf do voluntário.
+     * @returns {json} O objeto do voluntário.
+     */
     static async findByCPF(cpf) {
         const query = `
             SELECT *
@@ -49,6 +71,11 @@ class Volunteer
         return rows[0];
     }
     
+    /**
+     * Insere um novo voluntário.
+     * @param {json} volunteer - Objeto com as informações do voluntário.
+     * @return {number} O id do novo voluntário.
+     */
     static async create(volunteer) {
         const { cpf, nome, email, telefone } = volunteer;
 
@@ -64,6 +91,12 @@ class Volunteer
         return result.insertId;
     }
     
+    /**
+     * Atualiza os dados de um voluntário.
+     * @param {number} id - Id do voluntário a ser atualizado.
+     * @param {json} volunteer - Objeto com os novos dados do voluntário.
+     * @returns {json} Rows afetadas.
+     */
     static async update(id, volunteer) {
         const { cpf, nome, email, telefone } = volunteer;
 
@@ -78,6 +111,11 @@ class Volunteer
         return result.affectedRows;
     }
     
+    /**
+     * Deleta os dados de um voluntário.
+     * @param {number} id - Id do voluntário.
+     * @returns {json} Rows afetadas.
+     */
     static async delete(id) {
         const query = `
             DELETE FROM voluntarios
