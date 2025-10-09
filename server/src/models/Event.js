@@ -6,7 +6,7 @@ import db from '../config/database.js';
 class Event
 {
     /**
-     * Busca uma lista com todos os eventos.
+     * Realiza a query para buscar todos os eventos.
      * @returns {array} Lista de eventos.
      */
     static async findAll() {
@@ -21,7 +21,7 @@ class Event
     }
 
     /**
-     * Busca um evento por id
+     * Realiza a query para buscar um evento por id
      * @param {number} id - O id do evento.
      * @returns {json} O objeto do evento.
      */
@@ -38,7 +38,7 @@ class Event
     }
     
     /**
-     * Insere um novo evento.
+     * Realiza a query para inserir um novo evento.
      * @param {json} evento - Objeto com as informações do evento.
      * @return {number} O id do novo evento.
      */
@@ -58,7 +58,7 @@ class Event
     }
     
     /**
-     * Atualiza os dados de um evento.
+     * Realiza a query para atualizar os dados de um evento.
      * @param {number} id - Id do evento a ser atualizado.
      * @param {json} evento - Objeto com os novos dados do evento.
      * @returns {json} Rows afetadas.
@@ -78,7 +78,7 @@ class Event
     }
     
     /**
-     * Deleta os dados de um evento.
+     * Realiza a query para deletar os dados de um evento.
      * @param {number} id - Id do evento.
      * @returns {json} Rows afetadas.
      */

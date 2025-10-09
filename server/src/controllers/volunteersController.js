@@ -1,6 +1,15 @@
 import VolunteerServices from '../services/volunteerServices.js';
 
+/**
+ * @classdesc Classe com as funções que recebem requisições, tratam os dados e chamam funções de services (regras de negócio) de voluntários
+ */
 class VolunteersController {
+    /**
+     * Busca uma lista com todos os voluntários.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {array} Array de objetos de voluntários.
+     */
     static async getAll(req, res) {
         try {
             const volunteers = await VolunteerServices.getAllVolunteers();
@@ -11,6 +20,12 @@ class VolunteersController {
         }
     }
 
+    /**
+     * Busca um voluntário específico por ID.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto de voluntário.
+     */
     static async getOne(req, res) {
         try {
             const id = req.params.id;
@@ -23,6 +38,12 @@ class VolunteersController {
         }
     }
     
+    /**
+     * Insere um novo voluntário e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
+     */
     static async create(req, res) {
         try {
             // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
@@ -36,6 +57,12 @@ class VolunteersController {
         }
     }
 
+    /**
+     * Insere um voluntário em um evento e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
+     */
     static async addInEvent(req, res) {
         try {
             // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
@@ -48,7 +75,13 @@ class VolunteersController {
             res.status(500).json({ error: error.message });
         }
     }
-    
+
+    /**
+     * Atualiza um voluntário específico e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
+     */
     static async update(req, res) {
         try {
             // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
@@ -64,6 +97,12 @@ class VolunteersController {
         }
     }
     
+    /**
+     * Remove um voluntário específico e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
+     */
     static async delete(req, res) {
         try {
             const id = req.params.id;

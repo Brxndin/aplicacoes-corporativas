@@ -1,6 +1,15 @@
 import UserServices from '../services/userServices.js';
 
+/**
+ * @classdesc Classe com as funções que recebem requisições, tratam os dados e chamam funções de services (regras de negócio) de usuários
+ */
 class UsersController {
+    /**
+     * Busca uma lista com todos os usuários.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {array} Array de objetos de usuários.
+     */
     static async getAll(req, res) {
         try {
             const users = await UserServices.getAllUsers();
@@ -11,6 +20,12 @@ class UsersController {
         }
     }
 
+    /**
+     * Busca um usuário específico por ID.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto de usuário.
+     */
     static async getOne(req, res) {
         try {
             const id = req.params.id;
@@ -23,6 +38,12 @@ class UsersController {
         }
     }
     
+    /**
+     * Insere um novo usuário e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
+     */
     static async create(req, res) {
         try {
             // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
@@ -36,6 +57,12 @@ class UsersController {
         }
     }
     
+    /**
+     * Atualiza um usuário específico e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
+     */
     static async update(req, res) {
         try {
             // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
@@ -51,6 +78,12 @@ class UsersController {
         }
     }
     
+    /**
+     * Remove um usuário específico e retorna dados.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
+     */
     static async delete(req, res) {
         try {
             const id = req.params.id;

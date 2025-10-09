@@ -1,11 +1,18 @@
 import User from "../models/User.js";
 
+/**
+ * @classdesc Classe com as funções que aplicam regras de negócio nas operações de usuários
+ */
 class UserServices
 {
     // constantes para o tipo de usuário
     static ADM = 1;
     static PADRAO = 2;
 
+    /**
+     * Busca todos os usuários aplicando regras
+     * @returns {array} Lista de usuários.
+     */
     static async getAllUsers() {
         const users = await User.findAll();
 
@@ -19,6 +26,11 @@ class UserServices
         return users;
     }
 
+    /**
+     * Busca um usuário por id aplicando regras
+     * @param {number} id - O id do usuário.
+     * @returns {json} O objeto do usuário.
+     */
     static async getOneUser(id) {
         const users = await User.find(id);
 
@@ -31,6 +43,11 @@ class UserServices
         return user;
     }
 
+    /**
+     * Insere um novo usuário aplicando regras.
+     * @param {json} user - Objeto com as informações do usuário.
+     * @return {number} O id do novo usuário.
+     */
     static async createUser(user) {
         // verifica se o usuário já existe por e-mail
         const emailExists = await User.findByEmail(user.email);
@@ -48,6 +65,12 @@ class UserServices
         return await User.create(user);
     }
     
+    /**
+     * Atualiza os dados de um usuário aplicando regras.
+     * @param {number} id - Id do usuário a ser atualizado.
+     * @param {json} user - Objeto com os novos dados do usuário.
+     * @returns {json} Rows afetadas.
+     */
     static async updateUser(id, user) {
         // verifica se o usuário já existe por e-mail e por cpf
         const userWithEmail = await User.findByEmail(user.email);
@@ -69,6 +92,11 @@ class UserServices
         return updatedRows;
     }
     
+    /**
+     * Deleta os dados de um usuário aplicando regras.
+     * @param {number} id - Id do usuário.
+     * @returns {json} Rows afetadas.
+     */
     static async deleteUser(id) {
         const deletedRows = await User.delete(id);
 

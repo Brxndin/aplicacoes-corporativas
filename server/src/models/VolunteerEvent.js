@@ -6,8 +6,8 @@ import db from '../config/database.js';
 class VolunteerEvent
 {
     /**
-     * Busca uma lista com todas as relações entre voluntários e eventos.
-     * @returns {array} Lista de usuários.
+     * Realiza a query para buscar todas as relações entre voluntários e eventos.
+     * @returns {array} Lista de relações entre voluntários e eventos.
      */
     static async findAll() {
         const query = `
@@ -21,7 +21,7 @@ class VolunteerEvent
     }
 
     /**
-     * Busca as relações entre voluntários e eventos pelo id do evento e id do voluntário
+     * Realiza a query para buscar as relações entre voluntários e eventos pelo id do evento e id do voluntário
      * @param {json} volunteerEvent - Dados do voluntário e evento.
      * @returns {array} Lista de objetos da relação entre voluntários e eventos.
      */
@@ -41,7 +41,7 @@ class VolunteerEvent
     }
 
     /**
-     * Busca as relações entre voluntários e eventos pelo id do voluntário e data e hora de início e término
+     * Realiza a query para buscar as relações entre voluntários e eventos pelo id do voluntário e data e hora de início e término
      * @param {json} volunteerEvent - Dados do voluntário e evento.
      * @returns {json} Lista de objetos da relação entre voluntários e eventos.
      */
@@ -63,7 +63,7 @@ class VolunteerEvent
     }
     
     /**
-     * Insere uma nova relação entre voluntário e evento.
+     * Realiza a query para inserir uma nova relação entre voluntário e evento.
      * @param {json} volunteerEvent - Objeto com as informações do voluntário e evento.
      * @return {number} O id da nova relação entre voluntário e evento.
      */
@@ -83,7 +83,7 @@ class VolunteerEvent
     }
     
     /**
-     * Deleta os dados de uma relação entre voluntário e evento.
+     * Realiza a query para deletar os dados de uma relação entre voluntário e evento.
      * @param {number} id - Id da relação entre voluntário e evento.
      * @returns {json} Rows afetadas.
      */

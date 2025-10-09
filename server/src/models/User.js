@@ -6,7 +6,7 @@ import db from '../config/database.js';
 class User
 {
     /**
-     * Busca uma lista com todos os usuários.
+     * Realiza a query para buscar todos os usuários.
      * @returns {array} Lista de usuários.
      */
     static async findAll() {
@@ -21,7 +21,7 @@ class User
     }
 
     /**
-     * Busca um usuário por id
+     * Realiza a query para buscar um usuário por id
      * @param {number} id - O id do usuario.
      * @returns {json} O objeto do usuario.
      */
@@ -38,7 +38,7 @@ class User
     }
 
     /**
-     * Busca um usuário por email
+     * Realiza a query para buscar um usuário por email
      * @param {string} email - O email do usuario.
      * @returns {json} O objeto do usuario.
      */
@@ -55,7 +55,7 @@ class User
     }
     
     /**
-     * Insere um novo usuário.
+     * Realiza a query para inserir um novo usuário.
      * @param {json} usuario - Objeto com as informações do usuário.
      * @return {number} O id do novo usuário.
      */
@@ -75,7 +75,7 @@ class User
     }
     
     /**
-     * Atualiza os dados de um usuário.
+     * Realiza a query para atualizar os dados de um usuário.
      * @param {number} id - Id do usuário a ser atualizado.
      * @param {json} usuario - Objeto com os novos dados do usuário.
      * @returns {json} Rows afetadas.
@@ -95,7 +95,7 @@ class User
     }
     
     /**
-     * Deleta os dados de um usuário.
+     * Realiza a query para deletar os dados de um usuário.
      * @param {number} id - Id do usuário.
      * @returns {json} Rows afetadas.
      */

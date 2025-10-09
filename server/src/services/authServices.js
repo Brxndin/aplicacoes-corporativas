@@ -2,8 +2,15 @@ import User from "../models/User.js";
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 
+/**
+ * @classdesc Classe com as funções que aplicam regras de negócio nas operações de autenticação
+ */
 class AuthServices
 {
+    /**
+     * Verifica com regras e-mail e senha do usuário e gera token
+     * @returns {json} Dados do usuário e de token.
+     */
     static async verifyPassword(dados) {
         const { email, senha } = dados;
 
