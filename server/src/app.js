@@ -7,6 +7,8 @@ import eventsRoutes from './routes/eventsRoutes.js';
 import volunteersRoutes from './routes/volunteersRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import verifyJWT from './middlewares/verifyJWT.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
 
 // cria o app com express e configura
 const app = express();
@@ -14,6 +16,9 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+
+// rota da documentação Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // rotas da api
 app.use('/auth', authRoutes);
