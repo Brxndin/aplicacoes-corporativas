@@ -1,3 +1,4 @@
+import eventInterface from '../interfaces/eventInterface.js';
 import EventServices from '../services/eventServices.js';
 import UserServices from '../services/userServices.js';
 
@@ -47,15 +48,10 @@ class EventsController {
      */
     static async create(req, res) {
         try {
-            // aqui valida se o usuário logado é um adm
-            if (parseInt(req.userPayload?.role) != UserServices.ADM) {
-                throw new Error('Somente administradores podem cadastrar Eventos!');
-            }
+            // aqui trata os dados do voluntário com sua interface padrão
+            const eventData = eventInterface.treatData(req.body);
 
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
-
-            const id = await EventServices.createEvent(req.body);
+            const id = await EventServices.createEvent(eventData);
 
             res.status(201).json({ message: 'Evento criado com sucesso!', id });
         } catch (error) {
@@ -71,12 +67,12 @@ class EventsController {
      */
     static async update(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
-
             const id = req.params.id;
 
-            await EventServices.updateEvent(id, req.body);
+            // aqui trata os dados do voluntário com sua interface padrão
+            const eventData = eventInterface.treatData(req.body);
+
+            await EventServices.updateEvent(id, eventData);
 
             res.json({ message: 'Evento atualizado com sucesso!' });
         } catch (error) {

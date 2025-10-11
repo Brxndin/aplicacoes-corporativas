@@ -1,3 +1,4 @@
+import userInterface from '../interfaces/userInterface.js';
 import UserServices from '../services/userServices.js';
 
 /**
@@ -46,10 +47,10 @@ class UsersController {
      */
     static async create(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
+            // aqui trata os dados do usuário com sua interface padrão
+            const userData = userInterface.treatData(req.body);
 
-            const id = await UserServices.createUser(req.body);
+            const id = await UserServices.createUser(userData);
 
             res.status(201).json({ message: 'Usuário criado com sucesso!', id });
         } catch (error) {
@@ -65,12 +66,12 @@ class UsersController {
      */
     static async update(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
-
             const id = req.params.id;
 
-            await UserServices.updateUser(id, req.body);
+            // aqui trata os dados do usuário com sua interface padrão
+            const userData = userInterface.treatData(req.body);
+
+            await UserServices.updateUser(id, userData);
 
             res.json({ message: 'Usuário atualizado com sucesso!' });
         } catch (error) {

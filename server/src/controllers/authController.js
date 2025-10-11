@@ -1,3 +1,4 @@
+import userInterface from '../interfaces/userInterface.js';
 import AuthServices from '../services/authServices.js';
 
 /**
@@ -12,10 +13,10 @@ class AuthController {
      */
     static async login(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
+            // aqui trata os dados do usuário com sua interface padrão
+            const userData = userInterface.treatData(req.body);
 
-            const { payload, token } = await AuthServices.verifyPassword(req.body);
+            const { payload, token } = await AuthServices.verifyPassword(userData);
 
             res.status(200).json({
                 message: 'Login efetuado com sucesso!',

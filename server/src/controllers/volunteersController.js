@@ -1,3 +1,5 @@
+import volunteerEventInterface from '../interfaces/volunteerEventInterface.js';
+import volunteerInterface from '../interfaces/volunteerInterface.js';
 import VolunteerServices from '../services/volunteerServices.js';
 
 /**
@@ -46,10 +48,10 @@ class VolunteersController {
      */
     static async create(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
+            // aqui trata os dados do voluntário com sua interface padrão
+            const volunteerData = volunteerInterface.treatData(req.body);
 
-            const id = await VolunteerServices.createVolunteer(req.body);
+            const id = await VolunteerServices.createVolunteer(volunteerData);
 
             res.status(201).json({ message: 'Voluntário criado com sucesso!', id });
         } catch (error) {
@@ -65,10 +67,10 @@ class VolunteersController {
      */
     static async addInEvent(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
+            // aqui trata os dados da relação de voluntário e evento com sua interface padrão
+            const volunteerEventData = volunteerEventInterface.treatData(req.body);
 
-            const id = await VolunteerServices.addInEvent(req.body);
+            const id = await VolunteerServices.addInEvent(volunteerEventData);
 
             res.status(201).json({ message: 'Voluntário adicionado no evento com sucesso!', id });
         } catch (error) {
@@ -84,12 +86,12 @@ class VolunteersController {
      */
     static async update(req, res) {
         try {
-            // melhor criar validações melhores aqui pois no req.body pode vir qualquer coisa
-            // importante validar se os campos usados existem de fato
-
             const id = req.params.id;
 
-            await VolunteerServices.updateVolunteer(id, req.body);
+            // aqui trata os dados do voluntário com sua interface padrão
+            const volunteerData = volunteerInterface.treatData(req.body);
+
+            await VolunteerServices.updateVolunteer(id, volunteerData);
 
             res.json({ message: 'Voluntário atualizado com sucesso!' });
         } catch (error) {
