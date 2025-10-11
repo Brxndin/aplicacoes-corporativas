@@ -1,6 +1,9 @@
+import { useAuth } from "../auth/AuthContext";
 import ListLayout from "../components/ListLayout";
 
 export default function UserList() {
+  const { authState } = useAuth();
+
   return (
     <div>
       <ListLayout
@@ -15,7 +18,12 @@ export default function UserList() {
         linkDelete={"/users"}
         linkGetData={"/users"}
         linkNew={"/users/form"}
-        useActions={true}
+        // aqui define que somente administradores podem cadastrar, atualizar e excluir
+        useAddNew={authState?.user?.role == 1}
+        useActions={authState?.user?.role == 1}
+        useUpdate={authState?.user?.role == 1}
+        authPermission={true}
+        adminPermission={false}
       />
     </div>
   );

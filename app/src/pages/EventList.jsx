@@ -1,10 +1,13 @@
+import { useAuth } from "../auth/AuthContext";
 import ListLayout from "../components/ListLayout";
 
 export default function EventList() {
+  const { authState } = useAuth();
+
   return (
     <div>
       <ListLayout
-        title={'Listagem de Usuários'}
+        title={'Listagem de Eventos'}
         columnsAndNames={[
           { column: "Nome", nameInForm: "nome" },
           { column: "Descrição", nameInForm: "descricao" },
@@ -16,7 +19,12 @@ export default function EventList() {
         linkDelete={"/events"}
         linkGetData={"/events"}
         linkNew={"/events/form"}
+        // aqui define que somente administradores podem cadastrar
+        useAddNew={authState?.user?.role == 1}
         useActions={true}
+        useUpdate={true}
+        authPermission={true}
+        adminPermission={false}
       />
     </div>
   );

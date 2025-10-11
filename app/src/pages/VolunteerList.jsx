@@ -16,7 +16,11 @@ export default function VolunteerList() {
         linkDelete={"/volunteers"}
         linkGetData={"/volunteers"}
         linkNew={"/volunteers/form"}
+        useAddNew={true}
         useActions={true}
+        useUpdate={true}
+        authPermission={true}
+        adminPermission={false}
       />
     </div>
   );
