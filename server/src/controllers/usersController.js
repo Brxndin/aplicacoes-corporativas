@@ -100,6 +100,11 @@ class UsersController {
     static async delete(req, res) {
         try {
             const id = req.params.id;
+
+            // aqui impede que o usuário se exclua, fazendo com que sempre haja um usuário
+            if (parseInt(req.userPayload?.id) == id) {
+                throw new Error('Não é permitido excluir o próprio usuário!');
+            }
             
             await UserServices.deleteUser(id);
 
