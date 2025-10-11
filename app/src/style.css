@@ -47,6 +47,14 @@ input {
     margin-bottom: 10px;
 }
 
+textarea {
+    width: 230px;
+    border: 1px solid #333;
+    height: 100px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
 select {
     width: 235px;
     background-color: #fff;

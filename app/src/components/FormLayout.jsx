@@ -123,6 +123,15 @@ export default function FormLayout({
                   required={value.required || false}
                 />
               )}
+              {value.type == "textarea" && (
+                <textarea
+                  name={value.name}
+                  value={data[value.name] || ""}
+                  placeholder={value?.placeholder || ''}
+                  onChange={handleChange}
+                  required={value.required || false}
+                />
+              )}
               {value.type == "select" && (
                 <select
                   name={value.name}
