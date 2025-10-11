@@ -7,23 +7,36 @@ import { useAuth } from "../auth/AuthContext";
 export default function FormLayout({
   title,
   componentsAndNames,
+  submitButtonText,
   linkReturn,
   linkGetData,
   linkStore,
   linkUpdate,
-  authUser
+  afterSubmitSuccesFunction,
+  authPermission,
+  adminCreatePermission,
+  adminUpdatePermission,
 }) {
   const navigate = useNavigate();
   const [data, setData] = useState({});
+  const [erro, setErro] = useState('');
   const { id } = useParams();
   const { authState } = useAuth();
 
   useEffect(() => {
-    if (authUser && !authState.auth) {
+    if (authPermission && !authState?.auth) {
       navigate('/forbidden');
     }
 
-    if (id) {
+    if (adminCreatePermission && !id && authState?.user?.role != 1) {
+      navigate('/forbidden');
+    }
+
+    if (adminUpdatePermission && id && authState?.user?.role != 1) {
+      navigate('/forbidden');
+    }
+
+    if (linkGetData && id) {
       api
         .get(`${linkGetData}/${id}`)
         .then((res) => {
@@ -33,53 +46,68 @@ export default function FormLayout({
           console.log(error);
         });
     }
-  }, [id, linkGetData, authState, navigate, authUser]);
+  }, [id, linkGetData, authState, navigate, authPermission, adminCreatePermission, adminUpdatePermission]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (id) {
+    if (linkUpdate && id) {
       api
         .put(`${linkUpdate}/${id}`, data)
         .then((res) => {
-          console.log(res)
+          let dadosRetorno = res.data;
 
-          alert(res.data.message);
+          alert(dadosRetorno.message);
+
+          if (afterSubmitSuccesFunction) {
+            afterSubmitSuccesFunction(dadosRetorno);
+          }
         })
         .catch((error) => {
           let dadosRetorno = error.response.data;
 
-          alert(dadosRetorno.message);
+          setErro(dadosRetorno.message);
         });
-    } else {
+    } else if (linkStore) {
       api
         .post(linkStore, data)
         .then((res) => {
-          console.log(res)
+          let dadosRetorno = res.data;
 
-          alert(res.data.message);
+          alert(dadosRetorno.message);
+
+          if (afterSubmitSuccesFunction) {
+            afterSubmitSuccesFunction(dadosRetorno);
+          }
 
           setData({});
         })
         .catch((error) => {
           let dadosRetorno = error.response.data;
 
-          alert(dadosRetorno.message);
+          setErro(dadosRetorno.message);
         });
     }
   };
 
   const handleChange = (e) => {
+    if (erro) {
+      setErro('');
+    }
+
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  //   const style = {
-  //     display: "flex",
-  //   };
+    const errorStyle = {
+      color: "red",
+    };
 
   return (
     <>
       <h2>{title}</h2>
+      {erro &&
+        <p style={errorStyle}>Erro: {erro}</p>
+      }
       <form onSubmit={handleSubmit}>
         {componentsAndNames.map((value) => {
           return (
@@ -90,6 +118,7 @@ export default function FormLayout({
                   type={value.type}
                   name={value.name}
                   value={data[value.name] || ""}
+                  placeholder={value?.placeholder || ''}
                   onChange={handleChange}
                   required={value.required || false}
                 />
@@ -110,7 +139,7 @@ export default function FormLayout({
             </div>
           );
         })}
-        <button type="submit">{id ? 'Atualizar' : "Cadastrar"}</button>
+        <button type="submit">{submitButtonText}</button>
         {linkReturn && (
           <button
             onClick={(e) => {

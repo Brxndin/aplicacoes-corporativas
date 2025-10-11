@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../config/api";
+import { useAuth } from "../auth/AuthContext";
 
 // aqui eu decidi fazer uma lista padrão pra não repetir o código tantas vezes
 export default function ListLayout({
@@ -8,17 +9,29 @@ export default function ListLayout({
   columnsAndNames,
   emptyMessage,
   useActions,
+  useAddNew,
+  useUpdate,
   linkGetData,
   linkNew,
   linkShow,
   linkDelete,
+  authPermission,
+  adminPermission,
 }) {
   const navigate = useNavigate();
+  const { authState } = useAuth();
   const [search, setSearch] = useState('');
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    if (authPermission && !authState?.auth) {
+      navigate('/forbidden');
+    }
+
+    if (adminPermission && authState?.user?.role != 1) {
+      navigate('/forbidden');
+    }
+
     api
       .get(linkGetData)
       .then((res) => {
@@ -29,7 +42,7 @@ export default function ListLayout({
       .catch((error) => {
         console.log(error);
       });
-  }, [linkGetData]);
+  }, [linkGetData, authState, authPermission, adminPermission, navigate]);
 
   const handleDelete = (id) => {
     api
@@ -61,28 +74,28 @@ export default function ListLayout({
     setSearch(e.target.value);
   };
 
-//   const style = {
-//     display: "flex",
-//   };
-
   return (
     <>
-      <h2>{title}</h2>
-      <button
-        onClick={() => {
-          navigate(linkNew);
-        }}
-      >
-        Cadastrar Novo
-      </button>
-      <br/>
+      <h2 className='list-title'>{title}</h2>
+      { useAddNew && (
+        <>
+          <button
+            onClick={() => {
+              navigate(linkNew);
+            }}
+          >
+            Cadastrar Novo
+          </button>
+          <br/>
+        </>
+      )}
       <br/>
       <input
         type={'text'}
         name={'pesquisa'}
         value={search}
         onChange={handleChange}
-        placeholder="Pesquisar"
+        placeholder="Buscar"
       />
       <br/>
       <br/>
@@ -101,10 +114,12 @@ export default function ListLayout({
               <tr
                 key={item.id}
                 onClick={() => {
-                  navigate(`${linkShow}/${item.id}`);
+                  if (useUpdate) {
+                    navigate(`${linkShow}/${item.id}`);
+                  }
                 }}
                 // aqui é só pra saber que se clicar tem uma ação
-                style={{ cursor: "pointer" }}
+                style={useUpdate ? { cursor: "pointer" } : null}
               >
                 {columnsAndNames.map((value) => (
                   <td>{item[value.nameInForm]}</td>

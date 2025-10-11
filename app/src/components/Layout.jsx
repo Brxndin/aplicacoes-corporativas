@@ -10,7 +10,7 @@ export default function Layout() {
         <Outlet /> 
       </main>
 
-      <footer style={{ padding: '10px', backgroundColor: '#eee', textAlign: 'center' }}>
+      <footer>
         <p>&copy; 2025 Pindorama | Todos os direitos reservados.</p>
         <p>Feito por Brandin</p>
       </footer>
