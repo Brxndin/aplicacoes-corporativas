@@ -1,4 +1,5 @@
 import Event from "../models/Event.js";
+import dayjs from "dayjs";
 
 /**
  * @classdesc Classe com as funções que aplicam regras de negócio nas operações de eventos
@@ -6,13 +7,21 @@ import Event from "../models/Event.js";
 class EventServices
 {
     /**
-     * Formata a data enviada para o padrão Y-m-d H:i:s
-     * @returns {dateString} Data formatada.
+     * Faz validações nas datas informadas
+     * @param {dateString} dataInicio data de início.
+     * @param {dateString} dataTermino data de término.
      */
-    static formatDateTime(dateString) {
-        const newDate = new Date(dateString);
+    static validateDates(dataInicio, dataTermino) {
+        if (!dataInicio || !dataTermino) {
+            throw new Error('É preciso informar a data de início e término do evento!');
+        }
+        
+        const data1 = new Date(dataInicio);
+        const data2 = new Date(dataTermino);
 
-        return `${newDate.toLocaleDateString('pt-BR')} ${newDate.toLocaleTimeString('pt-BR')}`;
+        if (data1.getTime() > data2.getTime()) {
+            throw new Error('A data de início não pode ser maior que a data de término!');
+        }
     }
 
     /**
@@ -23,8 +32,8 @@ class EventServices
         const events =  await Event.findAll();
 
         events.map((event) => {
-            event.data_hora_inicio = this.formatDateTime(event.data_hora_inicio);
-            event.data_hora_fim = this.formatDateTime(event.data_hora_fim);
+            event.data_hora_inicio = dayjs(event.data_hora_inicio).format('DD/MM/YYYY HH:mm:ss');
+            event.data_hora_fim = dayjs(event.data_hora_fim).format('DD/MM/YYYY HH:mm:ss');
         });
 
         return events;
@@ -44,6 +53,10 @@ class EventServices
 
         const event = events[0];
 
+        // formata a data para o formato padrão pois vem no formato ISO
+        event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
+        event.data_hora_fim = dayjs(event.data_hora_fim).format('YYYY-MM-DD HH:mm:ss');
+
         return event;
     }
 
@@ -53,7 +66,12 @@ class EventServices
      * @return {number} O id do novo evento.
      */
     static async createEvent(event) {
-        // verificar qual regra de negócio aplicar
+        // valida as datas informadas
+        this.validateDates(event.data_hora_inicio, event.data_hora_fim);
+
+        // formata a data para o formato padrão pois vem no formato ISO
+        event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
+        event.data_hora_fim = dayjs(event.data_hora_fim).format('YYYY-MM-DD HH:mm:ss');
 
         return await Event.create(event);
     }
@@ -65,6 +83,13 @@ class EventServices
      * @returns {json} Rows afetadas.
      */
     static async updateEvent(id, event) {
+        // valida as datas informadas
+        this.validateDates(event.data_hora_inicio, event.data_hora_fim);
+
+        // formata a data para o formato padrão pois vem no formato ISO
+        event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
+        event.data_hora_fim = dayjs(event.data_hora_fim).format('YYYY-MM-DD HH:mm:ss');
+
         const updatedRows = await Event.update(id, event);
 
         if (updatedRows === 0) {
