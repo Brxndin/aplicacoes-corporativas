@@ -4,21 +4,13 @@ import { useAuth } from '../auth/AuthContext';
 export default function Header() {
   const { authState } = useAuth();
 
-  const navStyle = {
-    display: 'flex',
-    gap: '15px',
-    padding: '10px 20px',
-    backgroundColor: '#333',
-    color: 'white',
-  };
-
   const linkStyle = {
     color: 'white',
     textDecoration: 'none',
   };
 
   return (
-    <header style={navStyle}>
+    <header>
       <Link to="/" style={linkStyle}>Home</Link>
       
       {authState.auth && (
