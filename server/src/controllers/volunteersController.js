@@ -18,7 +18,10 @@ class VolunteersController {
 
             res.json(volunteers);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 
@@ -36,7 +39,10 @@ class VolunteersController {
 
             res.json(volunteer);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -55,7 +61,10 @@ class VolunteersController {
 
             res.status(201).json({ message: 'Voluntário criado com sucesso!', id });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 
@@ -74,7 +83,10 @@ class VolunteersController {
 
             res.status(201).json({ message: 'Voluntário adicionado no evento com sucesso!', id });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 
@@ -95,7 +107,10 @@ class VolunteersController {
 
             res.json({ message: 'Voluntário atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -113,7 +128,10 @@ class VolunteersController {
 
             res.json({ message: 'Voluntário deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 }

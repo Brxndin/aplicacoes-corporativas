@@ -17,7 +17,10 @@ class UsersController {
 
             res.json(users);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 
@@ -35,7 +38,10 @@ class UsersController {
 
             res.json(user);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -54,7 +60,10 @@ class UsersController {
 
             res.status(201).json({ message: 'Usuário criado com sucesso!', id });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -75,7 +84,10 @@ class UsersController {
 
             res.json({ message: 'Usuário atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -93,7 +105,10 @@ class UsersController {
 
             res.json({ message: 'Usuário deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 }

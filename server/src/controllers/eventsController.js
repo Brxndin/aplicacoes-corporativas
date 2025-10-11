@@ -1,6 +1,5 @@
 import eventInterface from '../interfaces/eventInterface.js';
 import EventServices from '../services/eventServices.js';
-import UserServices from '../services/userServices.js';
 
 /**
  * @classdesc Classe com as funções que recebem requisições, tratam os dados e chamam funções de services (regras de negócio) de eventos
@@ -18,7 +17,10 @@ class EventsController {
 
             res.json(events);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 
@@ -36,7 +38,10 @@ class EventsController {
 
             res.json(event);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -55,7 +60,10 @@ class EventsController {
 
             res.status(201).json({ message: 'Evento criado com sucesso!', id });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -76,7 +84,10 @@ class EventsController {
 
             res.json({ message: 'Evento atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
     
@@ -94,7 +105,10 @@ class EventsController {
 
             res.json({ message: 'Evento deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
         }
     }
 }
