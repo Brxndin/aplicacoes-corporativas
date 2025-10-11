@@ -1,6 +1,7 @@
 import express from 'express';
 import EventsController from '../controllers/eventsController.js';
 import verifyAdmin from '../middlewares/verifyAdmin.js';
+import verifyJWT from '../middlewares/verifyJWT.js';
 
 const router = express.Router();
 
@@ -41,8 +42,8 @@ router.get('/:id', EventsController.getOne);
  *          500:
  *              description: Erro ao cadastrar os dados.
  */
-router.post('/', verifyAdmin, EventsController.create);
-router.put('/:id', EventsController.update);
-router.delete('/:id', EventsController.delete);
+router.post('/', verifyJWT, verifyAdmin, EventsController.create);
+router.put('/:id', verifyJWT, EventsController.update);
+router.delete('/:id', verifyJWT, EventsController.delete);
 
 export default router;

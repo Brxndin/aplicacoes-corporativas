@@ -23,7 +23,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // rotas da api
 app.use('/auth', authRoutes);
 app.use('/users', verifyJWT, usersRoutes);
-app.use('/events', verifyJWT, eventsRoutes);
+app.use('/events', eventsRoutes);
 app.use('/volunteers', verifyJWT, volunteersRoutes);
 app.use('/dashboard', verifyJWT, dashboardRoutes);
 
