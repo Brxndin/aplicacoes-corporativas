@@ -1,0 +1,78 @@
+body {
+    font-family: Arial;
+}
+
+header {
+    display: flex;
+    gap: 15px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+footer {
+    padding: 10px;
+    background-color: #ebebeb;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #ebebeb;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+thead th {
+  background-color: #333;
+  color: white;
+}
+
+input {
+    width: 230px;
+    border: 1px solid #333;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+select {
+    width: 235px;
+    background-color: #fff;
+    border: 1px solid #333;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 235px;
+    height: 25px;
+    border: 1px solid #fff;
+    color: #fff;
+    background-color: #333;
+}
+
+label {
+    display: block;
+}
+
+.list-title {
+    text-align: center;
+}
+
+.form-title {
+    width: 20%;
+    margin: 0 auto;
+    align-content: center;
+}
