@@ -1,5 +1,6 @@
 body {
     font-family: Arial;
+    color: #333;
 }
 
 header {
@@ -16,26 +17,26 @@ footer {
     text-align: center;
 }
 
-table {
+.list-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+.list-table-cell {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
-tr:nth-child(even) {
+.list-table-line:nth-child(even) {
   background-color: #ebebeb;
 }
 
-tr:nth-child(odd) {
+.list-table-line:nth-child(odd) {
   background-color: #ffffff;
 }
 
-thead th {
+.list-table-header .list-table-header-cell {
   background-color: #333;
   color: white;
 }
@@ -75,12 +76,44 @@ label {
     display: block;
 }
 
-.list-title {
+.text-center {
     text-align: center;
 }
 
-.form-title {
-    width: 20%;
+.post-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
     margin: 0 auto;
-    align-content: center;
+}
+
+.post {
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.post-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-header {
+    background-color: #333;
+    font-size: 20px;
+    color: #fff;
+    height: 30px;
+}
+
+.post-body {
+    background-color: #fff;
+    color: #333;
+    height: 190px;
+}
+
+.post-footer {
+    background-color: #333;
+    color: #fff;
+    height: 20px;
 }

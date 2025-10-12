@@ -76,7 +76,7 @@ export default function ListLayout({
 
   return (
     <>
-      <h2 className='list-title'>{title}</h2>
+      <h2 className='text-center'>{title}</h2>
       { useAddNew && (
         <>
           <button
@@ -100,18 +100,19 @@ export default function ListLayout({
       <br/>
       <br/>
       {newData.length > 0 && (
-        <table>
-          <thead>
-            <tr>
+        <table className="list-table">
+          <thead className="list-table-header">
+            <tr className="list-table-line">
               {columnsAndNames.map((value) => (
-                <th>{value.column}</th>
+                <th className="list-table-cell list-table-header-cell">{value.column}</th>
               ))}
-              {useActions && <th>Ações</th>}
+              {useActions && <th className="list-table-cell list-table-header-cell">Ações</th>}
             </tr>
           </thead>
           <tbody>
             {newData.map((item) => (
               <tr
+                className="list-table-line"
                 key={item.id}
                 onClick={() => {
                   if (useUpdate) {
@@ -122,11 +123,11 @@ export default function ListLayout({
                 style={useUpdate ? { cursor: "pointer" } : null}
               >
                 {columnsAndNames.map((value) => (
-                  <td>{item[value.nameInForm]}</td>
+                  <td className="list-table-cell">{item[value.nameInForm]}</td>
                 ))}
 
                 {useActions && (
-                  <td>
+                  <td className="list-table-cell">
                     <button
                       onClick={(e) => {
                         // aqui serve pro onclick da linha ser interrompido
