@@ -6,6 +6,6 @@ const PORT = process.env.PORT || 3000;
 
 // inicia o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando em: http://${HOST}:${PORT}`);
     console.log(`Documentação da API: http://${HOST}:${PORT}/api-docs`);
 });
