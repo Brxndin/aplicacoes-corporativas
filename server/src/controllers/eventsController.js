@@ -25,6 +25,25 @@ class EventsController {
     }
 
     /**
+     * Busca uma lista com todos os próximos eventos.
+     * @param {Request} req Objeto da Request.
+     * @param {Response} res Objeto da Response.
+     * @returns {array} Array de objetos de eventos.
+     */
+    static async getAllNext(req, res) {
+        try {
+            const events = await EventServices.getAllNextEvents();
+
+            res.json(events);
+        } catch (error) {
+            res.status(500).json({
+                message: error.message,
+                error: error,
+            });
+        }
+    }
+
+    /**
      * Busca um evento específico por ID.
      * @param {Request} req Objeto da Request.
      * @param {Response} res Objeto da Response.

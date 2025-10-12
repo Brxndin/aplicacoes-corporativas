@@ -21,6 +21,23 @@ class Event
     }
 
     /**
+     * Realiza a query para buscar todos os próximos eventos.
+     * @returns {array} Lista de eventos.
+     */
+    static async findAllNext() {
+        const query = `
+            SELECT *
+            FROM eventos
+            WHERE data_hora_inicio >= NOW()
+            OR data_hora_fim > NOW()
+        `;
+
+        const [rows] = await db.query(query);
+
+        return rows;
+    }
+
+    /**
      * Realiza a query para buscar um evento por id
      * @param {number} id - O id do evento.
      * @returns {json} O objeto do evento.

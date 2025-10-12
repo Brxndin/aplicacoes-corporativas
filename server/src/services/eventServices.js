@@ -40,6 +40,21 @@ class EventServices
     }
 
     /**
+     * Busca todos os próximos eventos aplicando regras
+     * @returns {array} Lista de eventos.
+     */
+    static async getAllNextEvents() {
+        const events =  await Event.findAllNext();
+
+        events.map((event) => {
+            event.data_hora_inicio = dayjs(event.data_hora_inicio).format('DD/MM/YYYY HH:mm:ss');
+            event.data_hora_fim = dayjs(event.data_hora_fim).format('DD/MM/YYYY HH:mm:ss');
+        });
+
+        return events;
+    }
+
+    /**
      * Busca um evento por id aplicando regras
      * @param {number} id - O id do evento.
      * @returns {json} O objeto do evento.
