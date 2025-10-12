@@ -42,8 +42,8 @@ router.get('/:id', EventsController.getOne);
  *          500:
  *              description: Erro ao cadastrar os dados.
  */
-router.post('/', verifyJWT, verifyAdmin, EventsController.create);
-router.put('/:id', verifyJWT, EventsController.update);
-router.delete('/:id', verifyJWT, EventsController.delete);
+router.post('/', verifyAdmin, EventsController.create);
+router.put('/:id', EventsController.update);
+router.delete('/:id', EventsController.delete);
 
 export default router;

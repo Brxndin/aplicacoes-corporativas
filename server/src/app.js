@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import eventsRoutes from './routes/eventsRoutes.js';
 import volunteersRoutes from './routes/volunteersRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import homeRoutes from './routes/homeRoutes.js';
 import verifyJWT from './middlewares/verifyJWT.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
@@ -24,7 +25,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/auth', authRoutes);
 app.use('/home', homeRoutes);
 app.use('/users', verifyJWT, usersRoutes);
-app.use('/events', eventsRoutes);
+app.use('/events', verifyJWT, eventsRoutes);
 app.use('/volunteers', verifyJWT, volunteersRoutes);
 app.use('/dashboard', verifyJWT, dashboardRoutes);
 
