@@ -1,0 +1,53 @@
+@baseURL = http://localhost:3000
+
+### Rota pública (acesso livre)
+GET {{baseURL}}/home
+Content-Type: application/json
+
+### Login do usuário admin (usuário já existente no banco) (pegar o token gerado abaixo)
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@ifrs.edu.br",
+    "senha": "123456"
+}
+
+### Criação de usuário padrão
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+    "nome": "Padrão",
+    "email": "padrao@ifrs.edu.br",
+    "senha": "123456",
+    "tipo": "2"
+}
+
+### Login do usuário padrão (pegar o token gerado abaixo)
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "padrao@ifrs.edu.br",
+    "senha": "123456"
+}
+
+### Acesso ao painel (rota protegida, requer token de qualquer usuário autenticado)
+GET {{baseURL}}/dashboard
+Authorization: Bearer {{COLE_SEU_TOKEN_AQUI}}
+
+### Acesso aos voluntários (rota protegida, requer token de qualquer usuário autenticado)
+GET {{baseURL}}/volunteers
+Authorization: Bearer {{COLE_SEU_TOKEN_AQUI}}
+
+### Cadastro de eventos (rota protegida, requer token de usuário administrador autenticado)
+POST {{baseURL}}/events
+Authorization: Bearer {{COLE_SEU_TOKEN_AQUI}}
+
+{
+    "nome": "Evento teste",
+    "dsescricao": "Evento teste",
+    "data_hora_inicio": "2025-10-11 12:00:00",
+    "data_hora_fim": "2025-10-12 12:00:00"
+}
