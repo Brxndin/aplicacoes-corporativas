@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuarios {
+  id    Int    @id @default(autoincrement())
+  nome  String @db.VarChar(200)
+  email String @db.VarChar(200)
+  tipo  Int
+  senha String @db.VarChar(200)
+
+  @@map("usuarios")
+}
+
+model Eventos {
+  id             Int      @id @default(autoincrement())
+  nome           String   @db.VarChar(200)
+  descricao      String   @db.VarChar(200)
+  dataHoraInicio DateTime @map("data_hora_inicio")
+  dataHoraFim    DateTime @map("data_hora_fim")
+
+  @@map("eventos")
+}
+
+model Voluntarios {
+  id       Int    @id @default(autoincrement())
+  cpf      String @db.Char(11)
+  nome     String @db.VarChar(200)
+  email    String @db.VarChar(200)
+  telefone String @db.VarChar(200)
+
+  @@map("voluntarios")
+}
+
+// model VoluntarioEventos {
+//   eventoId     Int @map("evento_id")
+//   voluntarioId Int @map("voluntario_id")
+
+//   evento     Eventos     @relation(fields: [eventoId], references: [id])
+//   voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
+
+//   @@id([eventoId, voluntarioId])
+//   @@map("voluntario_eventos")
+// }
