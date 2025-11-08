@@ -1,23 +1,24 @@
-import db from '../config/database.js';
+import dayjs from 'dayjs';
+import prisma from '../config/prismaClient.js';
 
 /**
  * @classdesc Classe com as funções de banco de dados de eventos
  */
-class Event
-{
+class Event {
     /**
      * Realiza a query para buscar todos os eventos.
      * @returns {array} Lista de eventos.
      */
     static async findAll() {
-        const query = `
-            SELECT *
-            FROM eventos
-        `;
+        try {
+            const rows = await prisma.eventos.findMany();
 
-        const [rows] = await db.query(query);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -25,16 +26,30 @@ class Event
      * @returns {array} Lista de eventos.
      */
     static async findAllNext() {
-        const query = `
-            SELECT *
-            FROM eventos
-            WHERE data_hora_inicio >= NOW()
-            OR data_hora_fim > NOW()
-        `;
+        try {
+            const now = dayjs().format();
 
-        const [rows] = await db.query(query);
+            const rows = await prisma.eventos.findMany({
+                where: {
+                    dataHoraInicio: {
+                        gte: now,
+                    },
+                    OR: [
+                        {
+                            dataHoraFim: {
+                                gt: now,
+                            },
+                        },
+                    ],
+                },
+            });
 
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -43,37 +58,47 @@ class Event
      * @returns {json} O objeto do evento.
      */
     static async find(id) {
-        const query = `
-            SELECT *
-            FROM eventos
-            WHERE id = ?
-        `;
+        try {
+            const rows = await prisma.eventos.findUnique({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [rows] = await db.query(query, [id]);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para inserir um novo evento.
      * @param {json} evento - Objeto com as informações do evento.
      * @return {number} O id do novo evento.
      */
     static async create(evento) {
-        const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
+        try {
+            const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const query = `
-            INSERT INTO eventos
-            (nome, descricao, data_hora_inicio, data_hora_fim)
-            VALUES (?, ?, ?, ?)
-        `;
+            const result = await prisma.eventos.create({
+                data: {
+                    nome: nome,
+                    descricao: descricao,
+                    dataHoraInicio: data_hora_inicio,
+                    dataHoraFim: data_hora_fim,
+                },
+            });
 
-        const [result] = await db.query(query, [nome, descricao, data_hora_inicio, data_hora_fim]);
-
-        // retorna o id do registro recém criado
-        return result.insertId;
+            return result.id;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para atualizar os dados de um evento.
      * @param {number} id - Id do evento a ser atualizado.
@@ -81,33 +106,48 @@ class Event
      * @returns {json} Rows afetadas.
      */
     static async update(id, evento) {
-        const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
+        try {
+            const { nome, descricao, data_hora_inicio, data_hora_fim } = evento;
 
-        const query = `
-            UPDATE eventos
-            SET nome = ?, descricao = ?, data_hora_inicio = ?, data_hora_fim = ?
-            WHERE id = ? 
-        `;
+            const result = await prisma.eventos.update({
+                data: {
+                    nome: nome,
+                    descricao: descricao,
+                    dataHoraInicio: data_hora_inicio,
+                    dataHoraFim: data_hora_fim,
+                },
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [nome, descricao, data_hora_inicio, data_hora_fim, id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para deletar os dados de um evento.
      * @param {number} id - Id do evento.
      * @returns {json} Rows afetadas.
      */
     static async delete(id) {
-        const query = `
-            DELETE FROM eventos
-            WHERE id = ?
-        `;
+        try {
+            const result = await prisma.eventos.delete({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 }
 

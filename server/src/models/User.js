@@ -1,23 +1,23 @@
-import db from '../config/database.js';
+import prisma from '../config/prismaClient.js';
 
 /**
  * @classdesc Classe com as funções de banco de dados de usuários
  */
-class User
-{
+class User {
     /**
      * Realiza a query para buscar todos os usuários.
      * @returns {array} Lista de usuários.
      */
     static async findAll() {
-        const query = `
-            SELECT *
-            FROM usuarios
-        `;
+        try {
+            const rows = await prisma.usuarios.findMany();
 
-        const [rows] = await db.query(query);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -26,15 +26,19 @@ class User
      * @returns {json} O objeto do usuario.
      */
     static async find(id) {
-        const query = `
-            SELECT *
-            FROM usuarios
-            WHERE id = ?
-        `;
+        try {
+            const rows = await prisma.usuarios.findUnique({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [rows] = await db.query(query, [id]);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -43,37 +47,47 @@ class User
      * @returns {json} O objeto do usuario.
      */
     static async findByEmail(email) {
-        const query = `
-            SELECT *
-            FROM usuarios
-            WHERE email = ?
-        `;
+        try {
+            const rows = await prisma.usuarios.findUnique({
+                where: {
+                    email: email,
+                },
+            });
 
-        const [rows] = await db.query(query, [email]);
-
-        return rows[0];
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para inserir um novo usuário.
      * @param {json} usuario - Objeto com as informações do usuário.
      * @return {number} O id do novo usuário.
      */
     static async create(usuario) {
-        const { nome, email, tipo, senha } = usuario;
+        try {
+            const { nome, email, tipo, senha } = usuario;
 
-        const query = `
-            INSERT INTO usuarios
-            (nome, email, tipo, senha)
-            VALUES (?, ?, ?, ?)
-        `;
+            const result = await prisma.usuarios.create({
+                data: {
+                    nome: nome,
+                    email: email,
+                    tipo: tipo,
+                    senha: senha,
+                },
+            });
 
-        const [result] = await db.query(query, [nome, email, tipo, senha]);
-
-        // retorna o id do registro recém criado
-        return result.insertId;
+            return result.id;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para atualizar os dados de um usuário.
      * @param {number} id - Id do usuário a ser atualizado.
@@ -81,33 +95,48 @@ class User
      * @returns {json} Rows afetadas.
      */
     static async update(id, usuario) {
-        const { nome, email, tipo, senha } = usuario;
+        try {
+            const { nome, email, tipo, senha } = usuario;
 
-        const query = `
-            UPDATE usuarios
-            SET nome = ?, email = ?, tipo = ?, senha = ?
-            WHERE id = ?
-        `;
+            const result = await prisma.usuarios.update({
+                data: {
+                    nome: nome,
+                    email: email,
+                    tipo: tipo,
+                    senha: senha,
+                },
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [nome, email, tipo, senha, id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para deletar os dados de um usuário.
      * @param {number} id - Id do usuário.
      * @returns {json} Rows afetadas.
      */
     static async delete(id) {
-        const query = `
-            DELETE FROM usuarios
-            WHERE id = ?
-        `;
+        try {
+            const result = await prisma.usuarios.delete({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 }
 

@@ -1,23 +1,23 @@
-import db from '../config/database.js';
+import prisma from '../config/prismaClient.js';
 
 /**
  * @classdesc Classe com as funções de banco de dados de voluntários
  */
-class Volunteer
-{
+class Volunteer {
     /**
      * Realiza a query para buscar todos os voluntários.
      * @returns {array} Lista de voluntários.
      */
     static async findAll() {
-        const query = `
-            SELECT *
-            FROM voluntarios
-        `;
+        try {
+            const rows = await prisma.voluntarios.findMany();
 
-        const [rows] = await db.query(query);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -26,15 +26,19 @@ class Volunteer
      * @returns {json} O objeto do voluntário.
      */
     static async find(id) {
-        const query = `
-            SELECT *
-            FROM voluntarios
-            WHERE id = ?
-        `;
+        try {
+            const rows = await prisma.voluntarios.findUnique({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [rows] = await db.query(query, [id]);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -43,15 +47,19 @@ class Volunteer
      * @returns {json} O objeto do voluntário.
      */
     static async findByEmail(email) {
-        const query = `
-            SELECT *
-            FROM voluntarios
-            WHERE email = ?
-        `;
+        try {
+            const rows = await prisma.voluntarios.findUnique({
+                where: {
+                    email: email,
+                },
+            });
 
-        const [rows] = await db.query(query, [email]);
-
-        return rows[0];
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -60,37 +68,47 @@ class Volunteer
      * @returns {json} O objeto do voluntário.
      */
     static async findByCPF(cpf) {
-        const query = `
-            SELECT *
-            FROM voluntarios
-            WHERE cpf = ?
-        `;
+        try {
+            const rows = await prisma.voluntarios.findUnique({
+                where: {
+                    cpf: cpf,
+                },
+            });
 
-        const [rows] = await db.query(query, [cpf]);
-
-        return rows[0];
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para inserir um novo voluntário.
      * @param {json} volunteer - Objeto com as informações do voluntário.
      * @return {number} O id do novo voluntário.
      */
     static async create(volunteer) {
-        const { cpf, nome, email, telefone } = volunteer;
+        try {
+            const { cpf, nome, email, telefone } = volunteer;
 
-        const query = `
-            INSERT INTO voluntarios
-            (cpf, nome, email, telefone)
-            VALUES (?, ?, ?, ?)
-        `;
+            const result = await prisma.voluntarios.create({
+                data: {
+                    cpf: cpf,
+                    nome: nome,
+                    email: email,
+                    telefone: telefone,
+                },
+            });
 
-        const [result] = await db.query(query, [cpf, nome, email, telefone]);
-
-        // retorna o id do registro recém criado
-        return result.insertId;
+            return result.id;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para atualizar os dados de um voluntário.
      * @param {number} id - Id do voluntário a ser atualizado.
@@ -98,33 +116,48 @@ class Volunteer
      * @returns {json} Rows afetadas.
      */
     static async update(id, volunteer) {
-        const { cpf, nome, email, telefone } = volunteer;
+        try {
+            const { cpf, nome, email, telefone } = volunteer;
 
-        const query = `
-            UPDATE voluntarios
-            SET cpf = ?, nome = ?, email = ?, telefone = ?
-            WHERE id = ?
-        `;
+            const result = await prisma.voluntarios.update({
+                data: {
+                    cpf: cpf,
+                    nome: nome,
+                    email: email,
+                    telefone: telefone,
+                },
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [cpf, nome, email, telefone, id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para deletar os dados de um voluntário.
      * @param {number} id - Id do voluntário.
      * @returns {json} Rows afetadas.
      */
     static async delete(id) {
-        const query = `
-            DELETE FROM voluntarios
-            WHERE id = ?
-        `;
+        try {
+            const result = await prisma.voluntarios.delete({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 }
 
