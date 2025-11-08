@@ -11,7 +11,7 @@ class AuthController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens, token, etc.
      */
-    static async login(req, res) {
+    static async login(req, res, next) {
         try {
             // aqui trata os dados do usuário com sua interface padrão
             const userData = userInterface.treatData(req.body);
@@ -25,11 +25,9 @@ class AuthController {
                 token: token
             });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-                auth: false
-            });
+            error.auth = false;
+
+            next(error);
         }
     }
 }

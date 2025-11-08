@@ -1,11 +1,11 @@
-import VolunteerEvent from "../models/VolunteerEvent.js";
-import Volunteer from "../models/Volunteer.js";
+import VolunteerEvent from '../models/VolunteerEvent.js';
+import Volunteer from '../models/Volunteer.js';
+import CustomError from '../helpers/customError.js';
 
 /**
  * @classdesc Classe com as funções que aplicam regras de negócio nas operações de voluntários
  */
-class VolunteerServices
-{
+class VolunteerServices {
     /**
      * Busca todos os voluntários aplicando regras
      * @returns {array} Lista de voluntários.
@@ -23,7 +23,7 @@ class VolunteerServices
         const volunteers = await Volunteer.find(id);
 
         if (volunteers.length != 1) {
-            throw new Error('Voluntário não encontrado!');
+            throw new CustomError('Voluntário não encontrado!', 500);
         }
 
         const volunteer = volunteers[0];
@@ -41,13 +41,13 @@ class VolunteerServices
         const emailExists = await Volunteer.findByEmail(volunteer.email);
 
         if (emailExists) {
-            throw new Error("O e-mail informado já está em uso!");
+            throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
         const cpfExists = await Volunteer.findByCPF(volunteer.cpf);
 
         if (cpfExists) {
-            throw new Error("O CPF informado já está em uso!");
+            throw new CustomError('O CPF informado já está em uso!', 500);
         }
 
         return await Volunteer.create(volunteer);
@@ -62,12 +62,12 @@ class VolunteerServices
         const volunteerEventExists = await VolunteerEvent.findVolunteerByEvent(volunteerEvent);
 
         if (volunteerEventExists) {
-            throw new Error("Voluntário já cadastrado nesse evento!");
+            throw new CustomError('Voluntário já cadastrado nesse evento!', 500);
         }
 
         return await VolunteerEvent.create(volunteerEvent);
     }
-    
+
     /**
      * Atualiza os dados de um voluntário aplicando regras.
      * @param {number} id - Id do voluntário a ser atualizado.
@@ -79,24 +79,24 @@ class VolunteerServices
         const volunteerWithEmail = await Volunteer.findByEmail(volunteer.email);
 
         if (volunteerWithEmail && volunteerWithEmail.id != id) {
-            throw new Error("O e-mail informado já está em uso!");
+            throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
         const volunteerWithCpf = await Volunteer.findByCPF(volunteer.cpf);
 
         if (volunteerWithCpf && volunteerWithCpf.id != id) {
-            throw new Error("O CPF informado já está em uso!");
+            throw new CustomError('O CPF informado já está em uso!', 500);
         }
 
         const updatedRows = await Volunteer.update(id, volunteer);
 
         if (updatedRows === 0) {
-            throw new Error("Voluntário não encontrado!");
+            throw new CustomError('Voluntário não encontrado!', 500);
         }
 
         return updatedRows;
     }
-    
+
     /**
      * Deleta os dados de um voluntário aplicando regras.
      * @param {number} id - Id do voluntário.
@@ -106,7 +106,7 @@ class VolunteerServices
         const deletedRows = await Volunteer.delete(id);
 
         if (deletedRows === 0) {
-            throw new Error("Voluntário não encontrado!");
+            throw new CustomError('Voluntário não encontrado!', 500);
         }
 
         return deletedRows;

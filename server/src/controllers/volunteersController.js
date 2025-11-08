@@ -12,16 +12,13 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {array} Array de objetos de voluntários.
      */
-    static async getAll(req, res) {
+    static async getAll(req, res, next) {
         try {
             const volunteers = await VolunteerServices.getAllVolunteers();
 
             res.json(volunteers);
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 
@@ -31,7 +28,7 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto de voluntário.
      */
-    static async getOne(req, res) {
+    static async getOne(req, res, next) {
         try {
             const id = parseInt(req.params.id);
 
@@ -39,10 +36,7 @@ class VolunteersController {
 
             res.json(volunteer);
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
     
@@ -52,7 +46,7 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
      */
-    static async create(req, res) {
+    static async create(req, res, next) {
         try {
             // aqui trata os dados do voluntário com sua interface padrão
             const volunteerData = volunteerInterface.treatData(req.body);
@@ -61,10 +55,7 @@ class VolunteersController {
 
             res.status(201).json({ message: 'Voluntário criado com sucesso!', id });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 
@@ -74,7 +65,7 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
      */
-    static async addInEvent(req, res) {
+    static async addInEvent(req, res, next) {
         try {
             // aqui trata os dados da relação de voluntário e evento com sua interface padrão
             const volunteerEventData = volunteerEventInterface.treatData(req.body);
@@ -83,10 +74,7 @@ class VolunteersController {
 
             res.status(201).json({ message: 'Voluntário adicionado no evento com sucesso!', id });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 
@@ -96,7 +84,7 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
      */
-    static async update(req, res) {
+    static async update(req, res, next) {
         try {
             const id = parseInt(req.params.id);
 
@@ -107,10 +95,7 @@ class VolunteersController {
 
             res.json({ message: 'Voluntário atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
     
@@ -120,7 +105,7 @@ class VolunteersController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
      */
-    static async delete(req, res) {
+    static async delete(req, res, next) {
         try {
             const id = parseInt(req.params.id);
             
@@ -128,10 +113,7 @@ class VolunteersController {
 
             res.json({ message: 'Voluntário deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 }

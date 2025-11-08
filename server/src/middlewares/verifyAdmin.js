@@ -1,10 +1,11 @@
+import CustomError from '../helpers/customError.js';
 import UserServices from '../services/userServices.js';
 
 function verifyAdmin(req, res, next)
 {
     // aqui valida se o usuário logado é um adm
     if (parseInt(req.userPayload?.role) != UserServices.ADM) {
-        res.status(403).json({ error: 'Somente administradores têm acesso a esse recurso!' });
+        throw new CustomError('Somente administradores têm acesso a esse recurso!', 403);
     }
 
     next();

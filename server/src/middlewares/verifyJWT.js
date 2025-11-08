@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
+import CustomError from '../helpers/customError.js';
 
 function verifyJWT(req, res, next)
 {
@@ -8,9 +9,7 @@ function verifyJWT(req, res, next)
     
     if (!authHeader) {
         // aqui usa status específico para que o front capture o erro
-        res.status(401).json({
-            message: 'É preciso informar o token de acesso!',
-        });
+        throw new CustomError('É preciso informar o token de acesso!', 401);
     } else {
         // aqui substitui pois o header vem em texto puro
         const token = authHeader.replace('Bearer ', '');
@@ -30,9 +29,7 @@ function verifyJWT(req, res, next)
             next();
         } catch (error) {
             // aqui usa status específico para que o front capture o erro
-            res.status(401).json({
-                message: `Falha ao autenticar o token: ${error.message}`,
-            });
+            throw new CustomError(`Falha ao autenticar o token: ${error.message}`, 401);
         }
     }
 }

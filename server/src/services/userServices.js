@@ -1,10 +1,10 @@
-import User from "../models/User.js";
+import CustomError from '../helpers/customError.js';
+import User from '../models/User.js';
 
 /**
  * @classdesc Classe com as funções que aplicam regras de negócio nas operações de usuários
  */
-class UserServices
-{
+class UserServices {
     // constantes para o tipo de usuário
     static ADM = 1;
     static PADRAO = 2;
@@ -35,7 +35,7 @@ class UserServices
         const user = await User.find(id);
 
         if (!user) {
-            throw new Error('Usuário não encontrado!');
+            throw new CustomError('Usuário não encontrado!', 500);
         }
 
         return user;
@@ -51,18 +51,18 @@ class UserServices
         const emailExists = await User.findByEmail(user.email);
 
         if (emailExists) {
-            throw new Error("O e-mail informado já está em uso!");
+            throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
         if (![this.ADM, this.PADRAO].includes(parseInt(user.tipo))) {
-            throw new Error("O usuário deve ser Administrador ou Padrão!");
+            throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
         }
 
         // seria interessante colocar regra para validar senha com números, letras maiúsculas e minúsuclas e símbolos
 
         return await User.create(user);
     }
-    
+
     /**
      * Atualiza os dados de um usuário aplicando regras.
      * @param {number} id - Id do usuário a ser atualizado.
@@ -74,22 +74,22 @@ class UserServices
         const userWithEmail = await User.findByEmail(user.email);
 
         if (userWithEmail && userWithEmail.id != id) {
-            throw new Error("O e-mail informado já está em uso!");
+            throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
         if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
-            throw new Error("O usuário deve ser Administrador ou Padrão!");
+            throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
         }
 
         const updatedRows = await User.update(id, user);
 
         if (!updatedRows) {
-            throw new Error("Usuário não encontrado!");
+            throw new CustomError('Usuário não encontrado!', 500);
         }
 
         return updatedRows;
     }
-    
+
     /**
      * Deleta os dados de um usuário aplicando regras.
      * @param {number} id - Id do usuário.
@@ -99,7 +99,7 @@ class UserServices
         const deletedRows = await User.delete(id);
 
         if (!deletedRows) {
-            throw new Error("Usuário não encontrado!");
+            throw new CustomError('Usuário não encontrado!', 500);
         }
 
         return deletedRows;

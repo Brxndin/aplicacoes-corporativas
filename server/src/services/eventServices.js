@@ -1,3 +1,4 @@
+import CustomError from '../helpers/customError.js';
 import Event from '../models/Event.js';
 import dayjs from 'dayjs';
 
@@ -12,14 +13,14 @@ class EventServices {
      */
     static validateDates(dataInicio, dataTermino) {
         if (!dataInicio || !dataTermino) {
-            throw new Error('É preciso informar a data de início e término do evento!');
+            throw new CustomError('É preciso informar a data de início e término do evento!', 500);
         }
 
         const data1 = new Date(dataInicio);
         const data2 = new Date(dataTermino);
 
         if (data1.getTime() > data2.getTime()) {
-            throw new Error('A data de início não pode ser maior que a data de término!');
+            throw new CustomError('A data de início não pode ser maior que a data de término!', 500);
         }
     }
 
@@ -101,7 +102,7 @@ class EventServices {
         const updatedRows = await Event.update(id, event);
 
         if (!updatedRows) {
-            throw new Error('Evento não encontrado!');
+            throw new CustomError('Evento não encontrado!', 500);
         }
 
         return updatedRows;
@@ -116,7 +117,7 @@ class EventServices {
         const deletedRows = await Event.delete(id);
 
         if (!deletedRows) {
-            throw new Error('Evento não encontrado!');
+            throw new CustomError('Evento não encontrado!', 500);
         }
 
         return deletedRows;

@@ -11,16 +11,13 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {array} Array de objetos de eventos.
      */
-    static async getAll(req, res) {
+    static async getAll(req, res, next) {
         try {
             const events = await EventServices.getAllEvents();
 
             res.json(events);
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 
@@ -30,16 +27,13 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {array} Array de objetos de eventos.
      */
-    static async getAllNext(req, res) {
+    static async getAllNext(req, res, next) {
         try {
             const events = await EventServices.getAllNextEvents();
 
             res.json(events);
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 
@@ -49,7 +43,7 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto de evento.
      */
-    static async getOne(req, res) {
+    static async getOne(req, res, next) {
         try {
             const id = parseInt(req.params.id);
 
@@ -57,10 +51,7 @@ class EventsController {
 
             res.json(event);
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
     
@@ -70,7 +61,7 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros, mensagens e id.
      */
-    static async create(req, res) {
+    static async create(req, res, next) {
         try {
             // aqui trata os dados do voluntário com sua interface padrão
             const eventData = eventInterface.treatData(req.body);
@@ -79,10 +70,7 @@ class EventsController {
 
             res.status(201).json({ message: 'Evento criado com sucesso!', id });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
     
@@ -92,7 +80,7 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
      */
-    static async update(req, res) {
+    static async update(req, res, next) {
         try {
             const id = parseInt(req.params.id);
 
@@ -103,10 +91,7 @@ class EventsController {
 
             res.json({ message: 'Evento atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
     
@@ -116,7 +101,7 @@ class EventsController {
      * @param {Response} res Objeto da Response.
      * @returns {json} Objeto com dados usados pelo front-end, como erros e mensagens.
      */
-    static async delete(req, res) {
+    static async delete(req, res, next) {
         try {
             const id = parseInt(req.params.id);
             
@@ -124,10 +109,7 @@ class EventsController {
 
             res.json({ message: 'Evento deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({
-                message: error.message,
-                error: error,
-            });
+            next(error);
         }
     }
 }
