@@ -19,8 +19,8 @@ async function main() {
 }
 
 main()
-    .catch((e) => {
-        console.error('Erro no seed: ', e);
+    .catch((error) => {
+        console.error('Erro no seed: ', error);
         process.exit(1);
     })
     .finally(async () => {

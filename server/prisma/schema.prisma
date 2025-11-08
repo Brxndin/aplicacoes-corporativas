@@ -11,7 +11,7 @@ datasource db {
 model Usuarios {
   id    Int    @id @default(autoincrement())
   nome  String @db.VarChar(200)
-  email String @db.VarChar(200)
+  email String @unique @db.VarChar(200)
   tipo  Int
   senha String @db.VarChar(200)
 
@@ -32,7 +32,7 @@ model Voluntarios {
   id       Int    @id @default(autoincrement())
   cpf      String @db.Char(11)
   nome     String @db.VarChar(200)
-  email    String @db.VarChar(200)
+  email    String @unique @db.VarChar(200)
   telefone String @db.VarChar(200)
 
   @@map("voluntarios")
