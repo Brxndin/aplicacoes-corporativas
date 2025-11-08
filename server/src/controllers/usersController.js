@@ -32,7 +32,7 @@ class UsersController {
      */
     static async getOne(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
 
             const user = await UserServices.getOneUser(id);
 
@@ -75,7 +75,7 @@ class UsersController {
      */
     static async update(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
 
             // aqui trata os dados do usuário com sua interface padrão
             const userData = userInterface.treatData(req.body);
@@ -99,7 +99,7 @@ class UsersController {
      */
     static async delete(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
 
             // aqui impede que o usuário se exclua, fazendo com que sempre haja um usuário
             if (parseInt(req.userPayload?.id) == id) {

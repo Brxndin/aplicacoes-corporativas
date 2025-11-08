@@ -51,7 +51,7 @@ class EventsController {
      */
     static async getOne(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
 
             const event = await EventServices.getOneEvent(id);
 
@@ -94,7 +94,7 @@ class EventsController {
      */
     static async update(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
 
             // aqui trata os dados do voluntário com sua interface padrão
             const eventData = eventInterface.treatData(req.body);
@@ -118,7 +118,7 @@ class EventsController {
      */
     static async delete(req, res) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
             
             await EventServices.deleteEvent(id);
 
