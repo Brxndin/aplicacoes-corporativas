@@ -32,13 +32,11 @@ class UserServices
      * @returns {json} O objeto do usuário.
      */
     static async getOneUser(id) {
-        const users = await User.find(id);
+        const user = await User.find(id);
 
-        if (users.length != 1) {
+        if (!user) {
             throw new Error('Usuário não encontrado!');
         }
-
-        const user = users[0];
 
         return user;
     }
@@ -85,7 +83,7 @@ class UserServices
 
         const updatedRows = await User.update(id, user);
 
-        if (updatedRows === 0) {
+        if (!updatedRows) {
             throw new Error("Usuário não encontrado!");
         }
 
@@ -100,7 +98,7 @@ class UserServices
     static async deleteUser(id) {
         const deletedRows = await User.delete(id);
 
-        if (deletedRows === 0) {
+        if (!deletedRows) {
             throw new Error("Usuário não encontrado!");
         }
 

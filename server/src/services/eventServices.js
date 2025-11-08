@@ -1,11 +1,10 @@
-import Event from "../models/Event.js";
-import dayjs from "dayjs";
+import Event from '../models/Event.js';
+import dayjs from 'dayjs';
 
 /**
  * @classdesc Classe com as funções que aplicam regras de negócio nas operações de eventos
  */
-class EventServices
-{
+class EventServices {
     /**
      * Faz validações nas datas informadas
      * @param {dateString} dataInicio data de início.
@@ -15,7 +14,7 @@ class EventServices
         if (!dataInicio || !dataTermino) {
             throw new Error('É preciso informar a data de início e término do evento!');
         }
-        
+
         const data1 = new Date(dataInicio);
         const data2 = new Date(dataTermino);
 
@@ -29,7 +28,7 @@ class EventServices
      * @returns {array} Lista de eventos.
      */
     static async getAllEvents() {
-        const events =  await Event.findAll();
+        const events = await Event.findAll();
 
         events.map((event) => {
             event.data_hora_inicio = dayjs(event.data_hora_inicio).format('DD/MM/YYYY HH:mm:ss');
@@ -44,7 +43,7 @@ class EventServices
      * @returns {array} Lista de eventos.
      */
     static async getAllNextEvents() {
-        const events =  await Event.findAllNext();
+        const events = await Event.findAllNext();
 
         events.map((event) => {
             event.data_hora_inicio = dayjs(event.data_hora_inicio).format('DD/MM/YYYY HH:mm:ss');
@@ -60,13 +59,7 @@ class EventServices
      * @returns {json} O objeto do evento.
      */
     static async getOneEvent(id) {
-        const events = await Event.find(id);
-
-        if (events.length != 1) {
-            throw new Error('Evento não encontrado!');
-        }
-
-        const event = events[0];
+        const event = await Event.find(id);
 
         // formata a data para o formato padrão pois vem no formato ISO
         event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
@@ -84,13 +77,13 @@ class EventServices
         // valida as datas informadas
         this.validateDates(event.data_hora_inicio, event.data_hora_fim);
 
-        // formata a data para o formato padrão pois vem no formato ISO
-        event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
-        event.data_hora_fim = dayjs(event.data_hora_fim).format('YYYY-MM-DD HH:mm:ss');
+        // coloca no formato ISO8601
+        event.data_hora_inicio = dayjs(event.data_hora_inicio).format();
+        event.data_hora_fim = dayjs(event.data_hora_fim).format();
 
         return await Event.create(event);
     }
-    
+
     /**
      * Atualiza os dados de um evento aplicando regras.
      * @param {number} id - Id do evento a ser atualizado.
@@ -101,29 +94,29 @@ class EventServices
         // valida as datas informadas
         this.validateDates(event.data_hora_inicio, event.data_hora_fim);
 
-        // formata a data para o formato padrão pois vem no formato ISO
-        event.data_hora_inicio = dayjs(event.data_hora_inicio).format('YYYY-MM-DD HH:mm:ss');
-        event.data_hora_fim = dayjs(event.data_hora_fim).format('YYYY-MM-DD HH:mm:ss');
+        // coloca no formato ISO8601
+        event.data_hora_inicio = dayjs(event.data_hora_inicio).format();
+        event.data_hora_fim = dayjs(event.data_hora_fim).format();
 
         const updatedRows = await Event.update(id, event);
 
-        if (updatedRows === 0) {
-            throw new Error("Evento não encontrado!");
+        if (!updatedRows) {
+            throw new Error('Evento não encontrado!');
         }
 
         return updatedRows;
     }
-    
+
     /**
      * Deleta os dados de um evento aplicando regras.
      * @param {number} id - Id do evento.
      * @returns {json} Rows afetadas.
      */
-    static async deleteUser(id) {
+    static async deleteEvent(id) {
         const deletedRows = await Event.delete(id);
 
-        if (deletedRows === 0) {
-            throw new Error("Evento não encontrado!");
+        if (!deletedRows) {
+            throw new Error('Evento não encontrado!');
         }
 
         return deletedRows;
