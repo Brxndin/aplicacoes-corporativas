@@ -1,4 +1,4 @@
-import db from '../config/database.js';
+import db from '../config/mySQL.js';
 
 /**
  * @classdesc Classe com as funções de banco de dados das relações entre voluntários e eventos
