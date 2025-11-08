@@ -24,6 +24,7 @@ A seguir vou listar os comandos do terminal de cada pasta individualmente.
 
 Antes de iniciar o servidor, é necessário ter o MySQL rodando e configurar o arquivo .env para que tenha as informações de acesso ao banco de dados. Também é necessário rodar os script SQL para que a database, tabelas e dados iniciais estejam disponíveis. Esses script estão disponíveis em "/server/src/db/database.sql".
 
+* Cópia do arquivo .env.example: no Windows é `copy .env.example .env` e no Linux é `cp .env.example .env`. Após copiar, é necessário alterar os dados conforme as próprias configurações e senhas.
 * Instalação de dependências: `npm install`.
 * Iniciar o server: `npm start` ou `npm run dev`.
 * Criação da documentação do JSDoc (isso gera uma pasta "/docs" com arquivos HTML das funções): `npm run docs`.
