@@ -12,7 +12,7 @@ CREATE TABLE usuarios(
 
 -- seeder para usuário adm inicial
 INSERT INTO usuarios
-(nome, email, senha)
+(nome, email, tipo, senha)
 VALUES ('Administrador', 'admin@ifrs.edu.br', 1, '123456');
 
 CREATE TABLE eventos(
