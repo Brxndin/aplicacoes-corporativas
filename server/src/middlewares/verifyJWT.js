@@ -14,23 +14,19 @@ function verifyJWT(req, res, next)
         // aqui substitui pois o header vem em texto puro
         const token = authHeader.replace('Bearer ', '');
 
-        try {
-            // Verifica se o token é valido
-            jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
-                if (error) {
-                    throw new error;
-                }
+        // Verifica se o token é valido
+        jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
+            if (error) {
+                // aqui usa status específico para que o front capture o erro
+                throw new CustomError(`Falha ao autenticar o token: ${error.message}`, 401);
+            }
 
-                // aqui pega as informações do token que foram salvas no login
-                // é usado posteriormente quando precisa saber se o usuário é adm
-                req.userPayload = payload;
-            });
+            // aqui pega as informações do token que foram salvas no login
+            // é usado posteriormente quando precisa saber se o usuário é adm
+            req.userPayload = payload;
+        });
 
-            next();
-        } catch (error) {
-            // aqui usa status específico para que o front capture o erro
-            throw new CustomError(`Falha ao autenticar o token: ${error.message}`, 401);
-        }
+        next();
     }
 }
 
