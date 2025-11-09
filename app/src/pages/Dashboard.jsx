@@ -21,7 +21,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h2>Olá, {authState.user?.name}!</h2>
+      <h2 id="dashboard-title">Olá, {authState.user?.name}!</h2>
       <p>{dashboardText}</p>
     </div>
   );

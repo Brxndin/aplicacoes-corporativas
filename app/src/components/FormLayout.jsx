@@ -98,15 +98,11 @@ export default function FormLayout({
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-    const errorStyle = {
-      color: "red",
-    };
-
   return (
     <>
       <h2>{title}</h2>
       {erro &&
-        <p style={errorStyle}>Erro: {erro}</p>
+        <p id="form-error-message">Erro: {erro}</p>
       }
       <form onSubmit={handleSubmit}>
         {componentsAndNames.map((value) => {
@@ -148,7 +144,7 @@ export default function FormLayout({
             </div>
           );
         })}
-        <button type="submit">{submitButtonText}</button>
+        <button type="submit" id="form-submit-button">{submitButtonText}</button>
         {linkReturn && (
           <button
             onClick={(e) => {

@@ -128,3 +128,7 @@ label {
     color: #fff;
     height: 20px;
 }
+
+#form-error-message {
+    color: red;
+}
