@@ -7,34 +7,26 @@ import CustomError from '../helpers/customError.js';
  */
 class VolunteerServices {
     /**
-     * Busca todos os voluntários aplicando regras
-     * @returns {array} Lista de voluntários.
+     * Aplica regras em todos os voluntários informados
+     * @returns {void}
      */
-    static async getAllVolunteers() {
-        return await Volunteer.findAll();
-    }
+    static getAllVolunteers() {}
 
     /**
-     * Busca um voluntário por id aplicando regras
-     * @param {number} id - O id do voluntário.
-     * @returns {json} O objeto do voluntário.
+     * Aplica regras em um voluntário
+     * @param {json} volunteer - Objeto com as informações do usuário.
+     * @returns {void}
      */
-    static async getOneVolunteer(id) {
-        const volunteers = await Volunteer.find(id);
-
-        if (volunteers.length != 1) {
+    static getOneVolunteer(volunteer) {
+        if (!volunteer) {
             throw new CustomError('Voluntário não encontrado!', 500);
         }
-
-        const volunteer = volunteers[0];
-
-        return volunteer;
     }
 
     /**
-     * Insere um novo voluntário aplicando regras.
+     * Aplica regras em um voluntário que será criado
      * @param {json} volunteer - Objeto com as informações do voluntário.
-     * @return {number} O id do novo voluntário.
+     * @return {void}
      */
     static async createVolunteer(volunteer) {
         // verifica se o voluntário já existe por e-mail e por cpf
@@ -49,14 +41,12 @@ class VolunteerServices {
         if (cpfExists) {
             throw new CustomError('O CPF informado já está em uso!', 500);
         }
-
-        return await Volunteer.create(volunteer);
     }
 
     /**
-     * Insere uma nova relação entre voluntário e evento aplicando regras.
+     * Aplica regras em uma nova relação entre voluntário e evento que será criada
      * @param {json} volunteerEvent - Objeto com as informações do voluntário e evento.
-     * @return {number} O id da nova relação entre voluntário e evento.
+     * @return {void}
      */
     static async addInEvent(volunteerEvent) {
         const volunteerEventExists = await VolunteerEvent.findVolunteerByEvent(volunteerEvent);
@@ -64,15 +54,13 @@ class VolunteerServices {
         if (volunteerEventExists) {
             throw new CustomError('Voluntário já cadastrado nesse evento!', 500);
         }
-
-        return await VolunteerEvent.create(volunteerEvent);
     }
 
     /**
-     * Atualiza os dados de um voluntário aplicando regras.
+     * Aplica regras em um voluntário que será atualizado
      * @param {number} id - Id do voluntário a ser atualizado.
      * @param {json} volunteer - Objeto com os novos dados do voluntário.
-     * @returns {json} Rows afetadas.
+     * @returns {void}
      */
     static async updateVolunteer(id, volunteer) {
         // verifica se o voluntário já existe por e-mail e por cpf
@@ -87,30 +75,13 @@ class VolunteerServices {
         if (volunteerWithCpf && volunteerWithCpf.id != id) {
             throw new CustomError('O CPF informado já está em uso!', 500);
         }
-
-        const updatedRows = await Volunteer.update(id, volunteer);
-
-        if (updatedRows === 0) {
-            throw new CustomError('Voluntário não encontrado!', 500);
-        }
-
-        return updatedRows;
     }
 
     /**
-     * Deleta os dados de um voluntário aplicando regras.
-     * @param {number} id - Id do voluntário.
-     * @returns {json} Rows afetadas.
+     * Aplica regras em um voluntário que será deletado
+     * @returns {void}
      */
-    static async deleteVolunteer(id) {
-        const deletedRows = await Volunteer.delete(id);
-
-        if (deletedRows === 0) {
-            throw new CustomError('Voluntário não encontrado!', 500);
-        }
-
-        return deletedRows;
-    }
+    static deleteVolunteer() {}
 }
 
 export default VolunteerServices;

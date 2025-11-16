@@ -10,41 +10,59 @@ class UserServices {
     static PADRAO = 2;
 
     /**
-     * Busca todos os usuários aplicando regras
-     * @returns {array} Lista de usuários.
+     * Verifica se o dado informado é um numeral válido
+     * @param {any} data Dado a ser verificado.
+     * @returns {boolean}
      */
-    static async getAllUsers() {
-        const users = await User.findAll();
+    static isValidNumber(data) {
+        const type = typeof data;
 
+        if (type === 'number') {
+            return Number.isFinite(data);
+        }
+
+        if (type === 'string') {
+            if (data.trim() === "") {
+                return false;
+            }
+
+            const num = +data;
+
+            return Number.isFinite(num);
+        }
+        
+        return false;
+    }
+
+    /**
+     * Aplica regras em todos os usuários informados
+     * @param {array} users Lista de usuários.
+     * @returns {void}
+     */
+    static getAllUsers(users) {
         // aqui traduz o tipo conforme as constantes
         users.map((user) => {
             user.tipo = user.tipo == this.ADM ? 'Administrador' : 'Padrão';
 
             return user;
-        });
-
-        return users;
+        });;
     }
 
     /**
-     * Busca um usuário por id aplicando regras
-     * @param {number} id - O id do usuário.
-     * @returns {json} O objeto do usuário.
+     * Aplica regras em um usuário
+     * @param {json} user - Objeto com as informações do usuário.
+     * @returns {void}
      */
-    static async getOneUser(id) {
-        const user = await User.find(id);
-
+    static getOneUser(user) {
         if (!user) {
             throw new CustomError('Usuário não encontrado!', 500);
         }
-
-        return user;
     }
 
     /**
-     * Insere um novo usuário aplicando regras.
+     * Aplica regras em um usuário que será criado
      * @param {json} user - Objeto com as informações do usuário.
-     * @return {number} O id do novo usuário.
+     * @return {void}
      */
     static async createUser(user) {
         // verifica se o usuário já existe por e-mail
@@ -54,20 +72,25 @@ class UserServices {
             throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
+        // realiza validações no Tipo
+        if (!this.isValidNumber(user.tipo)) {
+            throw new CustomError('O Tipo do usuário deve ser um número válido!');
+        }
+
+        user.tipo = parseInt(user.tipo);
+
         if (![this.ADM, this.PADRAO].includes(parseInt(user.tipo))) {
             throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
         }
 
         // seria interessante colocar regra para validar senha com números, letras maiúsculas e minúsuclas e símbolos
-
-        return await User.create(user);
     }
 
     /**
-     * Atualiza os dados de um usuário aplicando regras.
+     * Aplica regras em um usuário que será atualizado
      * @param {number} id - Id do usuário a ser atualizado.
      * @param {json} user - Objeto com os novos dados do usuário.
-     * @returns {json} Rows afetadas.
+     * @returns {void}
      */
     static async updateUser(id, user) {
         // verifica se o usuário já existe por e-mail e por cpf
@@ -77,32 +100,29 @@ class UserServices {
             throw new CustomError('O e-mail informado já está em uso!', 500);
         }
 
+        // realiza validações no Tipo
+        if (!this.isValidNumber(user.tipo)) {
+            throw new CustomError('O Tipo do usuário deve ser um número válido!');
+        }
+
+        user.tipo = parseInt(user.tipo);
+
         if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
             throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
-        }
-
-        const updatedRows = await User.update(id, user);
-
-        if (!updatedRows) {
-            throw new CustomError('Usuário não encontrado!', 500);
-        }
-
-        return updatedRows;
+        }        
     }
 
     /**
-     * Deleta os dados de um usuário aplicando regras.
-     * @param {number} id - Id do usuário.
-     * @returns {json} Rows afetadas.
+     * Aplica regras em um usuário que será deletado
+     * @param {number} id - Id do usuário a ser excluído.
+     * @param {number} loggedUserId - Id do usuário logado.
+     * @returns {void}
      */
-    static async deleteUser(id) {
-        const deletedRows = await User.delete(id);
-
-        if (!deletedRows) {
-            throw new CustomError('Usuário não encontrado!', 500);
+    static deleteUser(id, loggedUserId) {
+        // aqui impede que o usuário se exclua, fazendo com que sempre haja um usuário
+        if (id == loggedUserId) {
+            throw new CustomError('Não é permitido excluir o próprio usuário!', 500);
         }
-
-        return deletedRows;
     }
 }
 

@@ -1,5 +1,6 @@
 import volunteerEventInterface from '../interfaces/volunteerEventInterface.js';
 import volunteerInterface from '../interfaces/volunteerInterface.js';
+import Volunteer from '../models/Volunteer.js';
 import VolunteerServices from '../services/volunteerServices.js';
 
 /**
@@ -14,7 +15,7 @@ class VolunteersController {
      */
     static async getAll(req, res, next) {
         try {
-            const volunteers = await VolunteerServices.getAllVolunteers();
+            const volunteers = await Volunteer.findAll();
 
             res.json(volunteers);
         } catch (error) {
@@ -32,7 +33,9 @@ class VolunteersController {
         try {
             const id = parseInt(req.params.id);
 
-            const volunteer = await VolunteerServices.getOneVolunteer(id);
+            const volunteer = await Volunteer.find(id);
+
+            VolunteerServices.getOneVolunteer(volunteer);
 
             res.json(volunteer);
         } catch (error) {
@@ -49,9 +52,11 @@ class VolunteersController {
     static async create(req, res, next) {
         try {
             // aqui trata os dados do voluntário com sua interface padrão
-            const volunteerData = volunteerInterface.treatData(req.body);
+            const volunteer = volunteerInterface.treatData(req.body);
 
-            const id = await VolunteerServices.createVolunteer(volunteerData);
+            await VolunteerServices.createVolunteer(volunteer);
+
+            const id = await Volunteer.create(volunteer);
 
             res.status(201).json({ message: 'Voluntário criado com sucesso!', id });
         } catch (error) {
@@ -68,9 +73,11 @@ class VolunteersController {
     static async addInEvent(req, res, next) {
         try {
             // aqui trata os dados da relação de voluntário e evento com sua interface padrão
-            const volunteerEventData = volunteerEventInterface.treatData(req.body);
+            const volunteerEvent = volunteerEventInterface.treatData(req.body);
 
-            const id = await VolunteerServices.addInEvent(volunteerEventData);
+            await VolunteerServices.addInEvent(volunteerEvent);
+            
+            const id = await VolunteerEvent.create(volunteerEvent); 
 
             res.status(201).json({ message: 'Voluntário adicionado no evento com sucesso!', id });
         } catch (error) {
@@ -89,9 +96,15 @@ class VolunteersController {
             const id = parseInt(req.params.id);
 
             // aqui trata os dados do voluntário com sua interface padrão
-            const volunteerData = volunteerInterface.treatData(req.body);
+            const volunteer = volunteerInterface.treatData(req.body);
 
-            await VolunteerServices.updateVolunteer(id, volunteerData);
+            await VolunteerServices.updateVolunteer(id, volunteer);
+
+            const updatedRows = await Volunteer.update(id, volunteer);
+
+            if (!updatedRows) {
+                throw new CustomError('Voluntário não encontrado!', 500);
+            }
 
             res.json({ message: 'Voluntário atualizado com sucesso!' });
         } catch (error) {
@@ -109,7 +122,13 @@ class VolunteersController {
         try {
             const id = parseInt(req.params.id);
             
-            await VolunteerServices.deleteVolunteer(id);
+            await VolunteerServices.deleteVolunteer();
+
+            const deletedRows = await Volunteer.delete(id);
+
+            if (!deletedRows) {
+                throw new CustomError('Voluntário não encontrado!', 500);
+            }
 
             res.json({ message: 'Voluntário deletado com sucesso!' });
         } catch (error) {

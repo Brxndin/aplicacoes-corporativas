@@ -1,41 +1,25 @@
-import User from '../models/User.js';
 import 'dotenv/config';
-import jwt from 'jsonwebtoken';
 import CustomError from '../helpers/customError.js';
+import User from '../models/User.js';
 
 /**
  * @classdesc Classe com as funções que aplicam regras de negócio nas operações de autenticação
  */
 class AuthServices {
     /**
-     * Verifica com regras e-mail e senha do usuário e gera token
-     * @returns {json} Dados do usuário e de token.
+     * Verifica e-mail e senha do usuário
+     * @returns {void}
      */
-    static async verifyPassword(dados) {
-        const { email, senha } = dados;
+    static async verifyPassword(user) {
+        // valida senha
 
-        // verificar qual regra de negócio aplicar
-        const usuario = await User.findByEmail(email);
+        // seria interessante salvar a senha em hash
 
-        if (!usuario || usuario?.senha != senha) {
+        const userWithEmail = await User.findByEmail(user.email);
+
+        if (!userWithEmail || userWithEmail?.senha != user.senha) {
             throw new CustomError('Dados incorretos!', 500);
         }
-
-        // aqui chamo de payload mas é o que vai ser transformado em token
-        const payload = {
-            id: usuario.id,
-            name: usuario.nome,
-            role: usuario.tipo,
-        };
-
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
-
-        return {
-            payload: payload,
-            token: token,
-        };
     }
 }
 

@@ -1,8 +1,9 @@
 import eventInterface from '../interfaces/eventInterface.js';
+import Event from '../models/Event.js';
 import EventServices from '../services/eventServices.js';
 
 /**
- * @classdesc Classe com as funções que recebem requisições, tratam os dados e chamam funções de services (regras de negócio) de eventos
+ * @classdesc Classe com as funções que recebem requisições, tratam os dados, chamam funções de services (regras de negócio) e salvam alterações no banco de dados de eventos
  */
 class EventsController {
     /**
@@ -13,7 +14,9 @@ class EventsController {
      */
     static async getAll(req, res, next) {
         try {
-            const events = await EventServices.getAllEvents();
+            const events = await Event.findAll();
+
+            EventServices.getAllEvents(events);
 
             res.json(events);
         } catch (error) {
@@ -29,7 +32,9 @@ class EventsController {
      */
     static async getAllNext(req, res, next) {
         try {
-            const events = await EventServices.getAllNextEvents();
+            const events = await Event.findAllNext();
+
+            EventServices.getAllEvents(events);
 
             res.json(events);
         } catch (error) {
@@ -47,7 +52,9 @@ class EventsController {
         try {
             const id = parseInt(req.params.id);
 
-            const event = await EventServices.getOneEvent(id);
+            const event = await Event.find(id);
+
+            EventServices.getOneEvent(event);
 
             res.json(event);
         } catch (error) {
@@ -64,9 +71,11 @@ class EventsController {
     static async create(req, res, next) {
         try {
             // aqui trata os dados do voluntário com sua interface padrão
-            const eventData = eventInterface.treatData(req.body);
+            const event = eventInterface.treatData(req.body);
 
-            const id = await EventServices.createEvent(eventData);
+            EventServices.createEvent(event);
+
+            const id = await Event.create(event);
 
             res.status(201).json({ message: 'Evento criado com sucesso!', id });
         } catch (error) {
@@ -85,9 +94,15 @@ class EventsController {
             const id = parseInt(req.params.id);
 
             // aqui trata os dados do voluntário com sua interface padrão
-            const eventData = eventInterface.treatData(req.body);
+            const event = eventInterface.treatData(req.body);
 
-            await EventServices.updateEvent(id, eventData);
+            EventServices.updateEvent(event);
+
+            const updatedRows = await Event.update(id, event);
+
+            if (!updatedRows) {
+                throw new CustomError('Evento não encontrado!', 500);
+            }
 
             res.json({ message: 'Evento atualizado com sucesso!' });
         } catch (error) {
@@ -105,7 +120,14 @@ class EventsController {
         try {
             const id = parseInt(req.params.id);
             
-            await EventServices.deleteEvent(id);
+            EventServices.deleteEvent(id);
+
+            const deletedRows = await Event.delete(id);
+
+            if (!deletedRows) {
+                // verificar a possibilidade de aplicar essa validação no service
+                throw new CustomError('Evento não encontrado!', 500);
+            }
 
             res.json({ message: 'Evento deletado com sucesso!' });
         } catch (error) {
