@@ -30,7 +30,7 @@ model Eventos {
 
 model Voluntarios {
   id       Int    @id @default(autoincrement())
-  cpf      String @db.Char(11)
+  cpf      String @unique @db.Char(11)
   nome     String @db.VarChar(200)
   email    String @unique @db.VarChar(200)
   telefone String @db.VarChar(200)
