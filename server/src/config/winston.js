@@ -11,6 +11,7 @@ const devConsoleFormat = winston.format.combine(
     winston.format.colorize({ all: true }),
     winston.format.printf((info) => {
         const { timestamp, level, message, ...meta } = info;
+        
         return `[${timestamp}] ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta) : ''}`;
     })
 );
