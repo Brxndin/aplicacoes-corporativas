@@ -35,6 +35,24 @@ class UserServices {
     }
 
     /**
+     * Valida e trata o tipo do usuário
+     * @param {json} user - Objeto com as informações do usuário.
+     * @returns {void}
+     */
+    static validateUserType(user) {
+        // realiza validações no Tipo
+        if (!this.isValidNumber(user.tipo)) {
+            throw new CustomError('O Tipo do usuário deve ser um número válido!');
+        }
+
+        user.tipo = parseInt(user.tipo);
+
+        if (![this.ADM, this.PADRAO].includes(parseInt(user.tipo))) {
+            throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
+        }
+    }
+
+    /**
      * Aplica regras em todos os usuários informados
      * @param {array} users Lista de usuários.
      * @returns {void}
@@ -73,15 +91,7 @@ class UserServices {
         }
 
         // realiza validações no Tipo
-        if (!this.isValidNumber(user.tipo)) {
-            throw new CustomError('O Tipo do usuário deve ser um número válido!');
-        }
-
-        user.tipo = parseInt(user.tipo);
-
-        if (![this.ADM, this.PADRAO].includes(parseInt(user.tipo))) {
-            throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
-        }
+        this.validateUserType(user);
 
         // seria interessante colocar regra para validar senha com números, letras maiúsculas e minúsuclas e símbolos
     }
@@ -101,15 +111,7 @@ class UserServices {
         }
 
         // realiza validações no Tipo
-        if (!this.isValidNumber(user.tipo)) {
-            throw new CustomError('O Tipo do usuário deve ser um número válido!');
-        }
-
-        user.tipo = parseInt(user.tipo);
-
-        if (![this.ADM, this.PADRAO].includes(user?.tipo)) {
-            throw new CustomError('O usuário deve ser Administrador ou Padrão!', 500);
-        }        
+        this.validateUserType(user);
     }
 
     /**
