@@ -4,7 +4,15 @@ Aplicação feita em React com ViteJS para listar eventos e seus voluntários, a
 
 
 # Objetivo
-Criado para a Prova P1 da cadeira de Desenvolvimento de Aplicações Corporativas.
+Criado para a Prova P1 e P2 da cadeira de Desenvolvimento de Aplicações Corporativas.
+
+
+
+# Tecnologias Usadas
+
+* React com ViteJS
+* Axios
+* Selenium
 
 
 
@@ -14,7 +22,9 @@ O projeto é separado em servidor (pasta server) e aplicativo (pasta app).
 
 * Para entrar na pasta do aplicativo, coloque no terminal (já estando na pasta aplicacoes-corporativas): `cd app`.
 
-Instalação de dependências: `npm i`.
+Antes de iniciar o aplicativo, é necessário seguir os passos abaixo para instalar as dependências.
+
+* Instalação de dependências: `npm install`.
 
 ## Caso queira ver a versão dev:
 
@@ -28,3 +38,10 @@ Instalação de dependências: `npm i`.
 ## Acesso
 
 Por padrão, ao dar o `npm run dev` ou `npm run preview` é mostrado no terminal o link para o aplicativo.
+
+## Testes
+
+Para testes automáticos de ponta a ponta (e2e), que utilizam Selenium, é preciso rodar manualmente os arquivos criados na pasta "/tests/e2e".
+
+* Um exemplo seria `node tests/e2e/login.test.js`.
+* IMPORTANTE: os testes com Selenium foram feitos para o navegador Mozilla Firefox.
