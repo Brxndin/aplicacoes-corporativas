@@ -1,23 +1,23 @@
-import db from '../config/mysql2.js';
+import prisma from '../config/prismaClient.js';
 
 /**
  * @classdesc Classe com as funções de banco de dados das relações entre voluntários e eventos
  */
-class VolunteerEvent
-{
+class VolunteerEvent {
     /**
      * Realiza a query para buscar todas as relações entre voluntários e eventos.
      * @returns {array} Lista de relações entre voluntários e eventos.
      */
     static async findAll() {
-        const query = `
-            SELECT *
-            FROM voluntario_eventos
-        `;
+        try {
+            const rows = await prisma.voluntariosEventos.findMany();
 
-        const [rows] = await db.query(query);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -26,18 +26,22 @@ class VolunteerEvent
      * @returns {array} Lista de objetos da relação entre voluntários e eventos.
      */
     static async findVolunteerByEvent(volunteerEvent) {
-        const { volunteerId, eventId } = volunteerEvent;
+        try {
+            const { volunteerId, eventId } = volunteerEvent;
 
-        const query = `
-            SELECT *
-            FROM voluntario_eventos
-            WHERE volunteer_id = ?
-            AND event_id = ?
-        `;
+            const rows = await prisma.voluntariosEventos.findUnique({
+                where: {
+                    volunteerId: volunteerId,
+                    eventId: eventId,
+                },
+            });
 
-        const [rows] = await db.query(query, [volunteerId, eventId]);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 
     /**
@@ -46,56 +50,84 @@ class VolunteerEvent
      * @returns {json} Lista de objetos da relação entre voluntários e eventos.
      */
     static async findVolunteerEventByHours(volunteerEvent) {
-        const { volunteerId, eventId, dataHoraInicio, dataHoraFim } = volunteerEvent;
+        try {
+            const { volunteerId, eventId, dataHoraInicio, dataHoraFim } = volunteerEvent;
 
-        const query = `
-            SELECT *
-            FROM voluntario_eventos
-            WHERE volunteer_id = ?
-            AND (
-                (? BETWEEN data_hora_inicio AND data_hora_fim) OR (? BETWEEN data_hora_inicio AND data_hora_fim)
-            )
-        `;
+            const rows = await prisma.eventos.findMany({
+                where: {
+                    volunteer_id: volunteerId,
+                    OR: [
+                        {
+                            dataHoraInicio: {
+                                lte: dayjs(dataHoraInicio).format(),
+                            },
+                            dataHoraFim: {
+                                gte: dayjs(dataHoraInicio).format(),
+                            },
+                        },
+                        {
+                            data_hora_inicio: {
+                                lte: dayjs(dataHoraFim).format(),
+                            },
+                            data_hora_fim: {
+                                gte: dayjs(dataHoraFim).format(),
+                            },
+                        },
+                    ],
+                },
+            });
 
-        const [rows] = await db.query(query, [volunteerId, dataHoraInicio, dataHoraFim]);
-
-        return rows;
+            return rows;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para inserir uma nova relação entre voluntário e evento.
      * @param {json} volunteerEvent - Objeto com as informações do voluntário e evento.
      * @return {number} O id da nova relação entre voluntário e evento.
      */
     static async create(volunteerEvent) {
-        const { volunteerId, eventId } = volunteerEvent;
+        try {
+            const { volunteerId, eventId } = volunteerEvent;
 
-        const query = `
-            INSERT INTO voluntario_eventos
-            (voluntario_id, evento_id)
-            VALUES (?, ?)
-        `;
+            const result = await prisma.voluntariosEventos.create({
+                data: {
+                    voluntarioId: volunteerId,
+                    eventoId: eventId,
+                },
+            });
 
-        const [result] = await db.query(query, [volunteerId, eventId]);
-
-        // retorna o id do registro recém criado
-        return result.insertId;
+            return result.id;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-    
+
     /**
      * Realiza a query para deletar os dados de uma relação entre voluntário e evento.
      * @param {number} id - Id da relação entre voluntário e evento.
      * @returns {json} Rows afetadas.
      */
     static async delete(id) {
-        const query = `
-            DELETE FROM voluntario_eventos
-            WHERE id = ?
-        `;
+        try {
+            const result = await prisma.voluntariosEventos.delete({
+                where: {
+                    id: id,
+                },
+            });
 
-        const [result] = await db.query(query, [id]);
-
-        return result.affectedRows;
+            return result;
+        } catch (error) {
+            throw error;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
 }
 
