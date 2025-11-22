@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', requestId: req.requestId });
+    res.status(200).json({ status: 'ok', requestId: req.requestId });
 });
 
 // rota da documentação Swagger
