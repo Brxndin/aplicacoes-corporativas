@@ -1,5 +1,6 @@
 import userInterface from '../interfaces/userInterface.js';
 import AuthServices from '../services/authServices.js';
+import jwt from 'jsonwebtoken';
 
 /**
  * @classdesc Classe com funções que recebem requisições, tratam os dados e chamamm funções de services (regras de negócio) de autenticação
@@ -16,13 +17,13 @@ class AuthController {
             // aqui trata os dados do usuário com sua interface padrão
             const user = userInterface.treatData(req.body);
 
-            await AuthServices.verifyPassword(user);
+            const userFound = await AuthServices.verifyPassword(user);
 
             // aqui chamo de payload mas é o que vai ser transformado em token
             const payload = {
-                id: usuario.id,
-                name: usuario.nome,
-                role: usuario.tipo,
+                id: userFound.id,
+                name: userFound.nome,
+                role: userFound.tipo,
             };
 
             const token = jwt.sign(payload, process.env.JWT_SECRET, {

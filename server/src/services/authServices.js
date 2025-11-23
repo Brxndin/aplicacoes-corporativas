@@ -20,6 +20,8 @@ class AuthServices {
         if (!userWithEmail || userWithEmail?.senha != user.senha) {
             throw new CustomError('Dados incorretos!', 500);
         }
+
+        return userWithEmail;
     }
 }
 
